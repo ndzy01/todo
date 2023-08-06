@@ -140,12 +140,17 @@ const Home = () => {
                       item.name
                     )
                   }
-                  description={item.describe}
+                  description={
+                    <>
+                      {item.describe}
+                      <Space>
+                        <Tag> {item.createdAt}</Tag>
+                        <Tag> {item.updatedAt}</Tag>
+                      </Space>
+                    </>
+                  }
                 />
-
                 <Space>
-                  <Tag> {item.createdAt}</Tag>
-                  <Tag> {item.updatedAt}</Tag>
                   <Button onClick={() => setS({ isShowEdit: true, todo: item })}> 编辑</Button>
                   <Button onClick={() => finish(item)}> 完成</Button>
                 </Space>
@@ -173,12 +178,17 @@ const Home = () => {
                       item.name
                     )
                   }
-                  description={item.describe}
+                  description={
+                    <>
+                      {item.describe}
+                      <Space>
+                        <Tag> {item.createdAt}</Tag>
+                        <Tag> {item.updatedAt}</Tag>
+                      </Space>
+                    </>
+                  }
                 />
                 <Space>
-                  <Tag> {item.createdAt}</Tag>
-                  <Tag> {item.updatedAt}</Tag>
-                  <Button onClick={() => recover(item)}> 恢复</Button>
                   <Button onClick={() => recover(item)}> 恢复</Button>
                   <Button onClick={() => del(item)}> 删除</Button>
                 </Space>
@@ -192,7 +202,7 @@ const Home = () => {
 
   return (
     <div>
-      <Form name="register" onFinish={create} style={{ maxWidth: 600 }} scrollToFirstError form={form}>
+      <Form name="register" onFinish={create} style={{ maxWidth: 336 }} scrollToFirstError form={form}>
         <Form.Item name="name" label="名称">
           <Input.TextArea rows={1} />
         </Form.Item>

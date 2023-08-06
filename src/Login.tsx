@@ -43,7 +43,7 @@ const Login = () => {
       key: '1',
       label: '登录',
       children: (
-        <Form {...formItemLayout} name="login" onFinish={login} style={{ maxWidth: 600 }} scrollToFirstError>
+        <Form {...formItemLayout} name="login" onFinish={login} style={{ maxWidth: 366 }} scrollToFirstError>
           <Form.Item
             name="password"
             label="密码"
@@ -73,7 +73,7 @@ const Login = () => {
       key: '2',
       label: '注册',
       children: (
-        <Form {...formItemLayout} name="register" onFinish={onFinish} style={{ maxWidth: 600 }} scrollToFirstError>
+        <Form {...formItemLayout} name="register" onFinish={onFinish} style={{ maxWidth: 366 }} scrollToFirstError>
           <Form.Item
             name="password"
             label="密码"
@@ -114,7 +114,6 @@ const Login = () => {
           <Form.Item
             name="nickname"
             label="昵称"
-            tooltip="What do you want others to call you?"
             rules={[{ required: true, message: '请输入你的昵称!', whitespace: true }]}
           >
             <Input />
