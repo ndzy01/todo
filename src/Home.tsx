@@ -1,6 +1,6 @@
 import { useMount, useSetState } from 'ahooks';
 import type { TabsProps } from 'antd';
-import { Button, Input, List, Modal, Space, Tabs, Form } from 'antd';
+import { Button, Input, List, Modal, Space, Tabs, Form, Tag } from 'antd';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
 
@@ -144,8 +144,8 @@ const Home = () => {
                 />
 
                 <Space>
-                  <div> {item.create_at}</div>
-                  <div> {item.update_at}</div>
+                  <Tag> {item.createdAt}</Tag>
+                  <Tag> {item.updatedAt}</Tag>
                   <Button onClick={() => setS({ isShowEdit: true, todo: item })}> 编辑</Button>
                   <Button onClick={() => finish(item)}> 完成</Button>
                 </Space>
@@ -176,6 +176,9 @@ const Home = () => {
                   description={item.describe}
                 />
                 <Space>
+                  <Tag> {item.createdAt}</Tag>
+                  <Tag> {item.updatedAt}</Tag>
+                  <Button onClick={() => recover(item)}> 恢复</Button>
                   <Button onClick={() => recover(item)}> 恢复</Button>
                   <Button onClick={() => del(item)}> 删除</Button>
                 </Space>
