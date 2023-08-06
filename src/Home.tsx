@@ -132,13 +132,20 @@ const Home = () => {
               <List.Item key={item.id}>
                 <List.Item.Meta
                   title={
-                    item.link ? (
-                      <a target="_blank" href={item.link}>
-                        {item.name}
-                      </a>
-                    ) : (
-                      item.name
-                    )
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      {item.link ? (
+                        <a target="_blank" href={item.link}>
+                          {item.name}
+                        </a>
+                      ) : (
+                        item.name
+                      )}
+
+                      <Space>
+                        <Button onClick={() => setS({ isShowEdit: true, todo: item })}> 编辑</Button>
+                        <Button onClick={() => finish(item)}> 完成</Button>
+                      </Space>
+                    </div>
                   }
                   description={
                     <>
@@ -150,10 +157,6 @@ const Home = () => {
                     </>
                   }
                 />
-                <Space>
-                  <Button onClick={() => setS({ isShowEdit: true, todo: item })}> 编辑</Button>
-                  <Button onClick={() => finish(item)}> 完成</Button>
-                </Space>
               </List.Item>
             )}
           </VirtualList>
@@ -170,13 +173,19 @@ const Home = () => {
               <List.Item key={item.id}>
                 <List.Item.Meta
                   title={
-                    item.link ? (
-                      <a target="_blank" href={item.link}>
-                        {item.name}
-                      </a>
-                    ) : (
-                      item.name
-                    )
+                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      {item.link ? (
+                        <a target="_blank" href={item.link}>
+                          {item.name}
+                        </a>
+                      ) : (
+                        item.name
+                      )}
+                      <Space>
+                        <Button onClick={() => recover(item)}> 恢复</Button>
+                        <Button onClick={() => del(item)}> 删除</Button>
+                      </Space>
+                    </div>
                   }
                   description={
                     <>
@@ -188,10 +197,6 @@ const Home = () => {
                     </>
                   }
                 />
-                <Space>
-                  <Button onClick={() => recover(item)}> 恢复</Button>
-                  <Button onClick={() => del(item)}> 删除</Button>
-                </Space>
               </List.Item>
             )}
           </VirtualList>
@@ -245,7 +250,7 @@ const Home = () => {
             <Input.TextArea
               rows={3}
               value={s.todo?.name}
-              onChange={(e) => {
+              onChange={(e: { target: { value: any } }) => {
                 setS({ todo: { ...s.todo, name: e.target.value } });
               }}
               placeholder="名称"
@@ -255,7 +260,7 @@ const Home = () => {
             <Input.TextArea
               rows={3}
               value={s.todo?.describe}
-              onChange={(e) => {
+              onChange={(e: { target: { value: any } }) => {
                 setS({ todo: { ...s.todo, describe: e.target.value } });
               }}
               placeholder="描述"
@@ -265,7 +270,7 @@ const Home = () => {
             <Input.TextArea
               rows={3}
               value={s.todo?.link}
-              onChange={(e) => {
+              onChange={(e: { target: { value: any } }) => {
                 setS({ todo: { ...s.todo, link: e.target.value } });
               }}
               placeholder="链接"
