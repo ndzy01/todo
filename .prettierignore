@@ -1,0 +1,11 @@
+.dumi/tmp
+.dumi/tmp-production
+package-lock.json
+*.yaml
+.idea
+.fleet
+dist
+.gitignore
+*.png
+CNAME
+.eslintrc.cjs

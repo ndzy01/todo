@@ -1,5 +1,7 @@
 import type { TabsProps } from 'antd';
 import { Button, Form, Input, Tabs } from 'antd';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import serviceAxios from './http';
 
 const formItemLayout = {
@@ -13,64 +15,32 @@ const formItemLayout = {
   },
 };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
-const ITab = ({ s, getAllTodo, setS }: any) => {
+const Login = () => {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const onFinish = (values: any) => {
-    serviceAxios.post('/users/register', { ...values }).then(() => {});
+    setLoading(true);
+    serviceAxios.post('/users/register', { ...values }).finally(() => {
+      setLoading(false);
+    });
   };
 
   const login = (values: any) => {
-    setS({ loading: true });
+    setLoading(true);
     serviceAxios
       .post('/users/login', { ...values })
       .then((res) => {
         localStorage.setItem('token', res.data.token);
-        getAllTodo();
+        navigate('/');
       })
       .finally(() => {
-        setS({ loading: false });
-      });
-  };
-
-  const create = (values: any) => {
-    setS({ loading: true });
-    serviceAxios
-      .post('/todomysql', { ...values })
-      .then(() => {
-        getAllTodo();
-      })
-      .finally(() => {
-        setS({ loading: false });
+        setLoading(false);
       });
   };
 
   const items: TabsProps['items'] = [
     {
       key: '1',
-      label: '创建待办',
-      children: (
-        <Form {...formItemLayout} name="register" onFinish={create} style={{ maxWidth: 600 }} scrollToFirstError>
-          <Form.Item name="name" label="名称">
-            <Input.TextArea rows={1} />
-          </Form.Item>
-
-          <Form.Item name="describe" label="描述">
-            <Input.TextArea rows={1} />
-          </Form.Item>
-
-          <Form.Item name="link" label="链接">
-            <Input.TextArea rows={1} />
-          </Form.Item>
-
-          <Form.Item {...buttonItemLayout}>
-            <Button loading={s.loading} type="primary" htmlType="submit">
-              创建
-            </Button>
-          </Form.Item>
-        </Form>
-      ),
-    },
-    {
-      key: '2',
       label: '登录',
       children: (
         <Form {...formItemLayout} name="login" onFinish={login} style={{ maxWidth: 600 }} scrollToFirstError>
@@ -92,7 +62,7 @@ const ITab = ({ s, getAllTodo, setS }: any) => {
             <Input style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item {...buttonItemLayout}>
-            <Button loading={s.loading} type="primary" htmlType="submit">
+            <Button loading={loading} type="primary" htmlType="submit">
               登录
             </Button>
           </Form.Item>
@@ -100,7 +70,7 @@ const ITab = ({ s, getAllTodo, setS }: any) => {
       ),
     },
     {
-      key: '3',
+      key: '2',
       label: '注册',
       children: (
         <Form {...formItemLayout} name="register" onFinish={onFinish} style={{ maxWidth: 600 }} scrollToFirstError>
@@ -154,7 +124,7 @@ const ITab = ({ s, getAllTodo, setS }: any) => {
             <Input style={{ width: '100%' }} />
           </Form.Item>
           <Form.Item {...buttonItemLayout}>
-            <Button type="primary" htmlType="submit">
+            <Button loading={loading} type="primary" htmlType="submit">
               注册
             </Button>
           </Form.Item>
@@ -166,4 +136,4 @@ const ITab = ({ s, getAllTodo, setS }: any) => {
   return <Tabs defaultActiveKey="1" items={items} />;
 };
 
-export default ITab;
+export default Login;
