@@ -1,19 +1,11 @@
 import { useMount } from 'ahooks';
-import { Routes, Route, Outlet, Link, useNavigate } from 'react-router-dom';
+import { Routes, Route, Outlet, Link } from 'react-router-dom';
 import { Button } from 'antd';
 import { useState } from 'react';
 import Login from './Login';
 import Home from './Home';
 
 const App = () => {
-  const navigate = useNavigate();
-
-  useMount(() => {
-    const token = localStorage.getItem('token');
-
-    if (!token) navigate('/login');
-  });
-
   return (
     <Routes>
       <Route path="/" element={<Layout />}>

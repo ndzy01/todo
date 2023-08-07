@@ -1,6 +1,7 @@
 import { useMount, useSetState } from 'ahooks';
 import type { TabsProps } from 'antd';
 import { Button, Input, List, Modal, Space, Tabs, Form, Tag } from 'antd';
+import { useNavigate } from 'react-router-dom';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
 
@@ -21,6 +22,7 @@ interface ITodoRecord {
 
 const ContainerHeight = 888;
 const Home = () => {
+  const navigate = useNavigate();
   const [form] = Form.useForm();
   const [s, setS] = useSetState<{
     list: ITodo[];
@@ -118,6 +120,10 @@ const Home = () => {
   };
 
   useMount(() => {
+    const token = localStorage.getItem('token');
+
+    if (!token) navigate('/login');
+
     getAllTodo();
   });
 
