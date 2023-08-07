@@ -50,7 +50,7 @@ const Home = () => {
   const getAllTodo = () => {
     setS({ loading: true });
     serviceAxios
-      .get('/todomysql', { params: { isDel: '1', tagId: s.tagId } })
+      .get('/todos', { params: { isDel: '1', tagId: s.tagId } })
       .then((res) => {
         const { list = [], delList = [] } = res.data;
 
@@ -68,7 +68,7 @@ const Home = () => {
   const create = (values: any) => {
     setS({ createLoading: true });
     serviceAxios
-      .post('/todomysql', { ...values })
+      .post('/todos', { ...values })
       .then(() => {
         getAllTodo();
       })
@@ -81,7 +81,7 @@ const Home = () => {
   const edit = () => {
     setS({ loading: true });
     serviceAxios
-      .patch(`/todomysql/${s.todo.id}`, {
+      .patch(`/todos/${s.todo.id}`, {
         name: s.todo?.name,
         detail: s.todo?.detail,
         link: s.todo?.link,
@@ -95,7 +95,7 @@ const Home = () => {
   const finish = (item: ITodo) => {
     setS({ loading: true });
     serviceAxios
-      .patch(`/todomysql/${item.id}`, {
+      .patch(`/todos/${item.id}`, {
         isDel: true,
       })
       .then(() => {
@@ -105,7 +105,7 @@ const Home = () => {
 
   const del = (item: ITodo) => {
     setS({ loading: true });
-    serviceAxios.delete(`/todomysql/${item.id}`).then(() => {
+    serviceAxios.delete(`/todos/${item.id}`).then(() => {
       getAllTodo();
     });
   };
@@ -113,7 +113,7 @@ const Home = () => {
   const recover = (item: ITodo) => {
     setS({ loading: true });
     serviceAxios
-      .patch(`/todomysql/${item.id}`, {
+      .patch(`/todos/${item.id}`, {
         isDel: false,
       })
       .then(() => {
@@ -234,7 +234,16 @@ const Home = () => {
           <Input.TextArea rows={1} />
         </Form.Item>
 
-        <Form.Item name="tagId" label="标签">
+        <Form.Item
+          name="tagId"
+          label="标签"
+          rules={[
+            {
+              required: true,
+              message: '请选择一个标签',
+            },
+          ]}
+        >
           <Select options={s.tags.map((item) => ({ label: item.name, value: item.id }))} />
         </Form.Item>
 
@@ -305,6 +314,7 @@ const Home = () => {
           </div>
           <div>
             <Select
+              style={{ width: 200 }}
               value={s.todo?.tagId}
               onChange={(v) => {
                 setS({ todo: { ...s.todo, tagId: v } });
