@@ -1,8 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount, useSetState, useUpdateEffect } from 'ahooks';
 import type { TabsProps } from 'antd';
-import { Button, Input, List, Modal, Space, Tabs, Form, Tag, Select } from 'antd';
+import { Button, Input, List, Modal, Space, Tabs, Form, Tag, Select, DatePicker } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
+import type { RangePickerProps } from 'antd/es/date-picker';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
 
@@ -22,6 +24,13 @@ interface ITodoRecord {
 }
 
 const ContainerHeight = 888;
+const range = (start: number, end: number) => {
+  const result = [];
+  for (let i = start; i < end; i++) {
+    result.push(i);
+  }
+  return result;
+};
 const Home = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -50,7 +59,7 @@ const Home = () => {
   const getAllTodo = () => {
     setS({ loading: true });
     serviceAxios
-      .get('/todos', { params: { isDel: '1', tagId: s.tagId } })
+      .get('/todos', { params: { tagId: s.tagId } })
       .then((res) => {
         const { list = [], delList = [] } = res.data;
 
@@ -120,6 +129,16 @@ const Home = () => {
         getAllTodo();
       });
   };
+
+  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
+    return current && current < dayjs().endOf('day');
+  };
+
+  const disabledDateTime = () => ({
+    disabledHours: () => range(0, 24).splice(4, 20),
+    disabledMinutes: () => range(30, 60),
+    disabledSeconds: () => [55, 56],
+  });
 
   useMount(() => {
     const token = localStorage.getItem('token');
@@ -247,6 +266,24 @@ const Home = () => {
           <Select options={s.tags.map((item) => ({ label: item.name, value: item.id }))} />
         </Form.Item>
 
+        <Form.Item
+          name="deadline"
+          label="标签"
+          rules={[
+            {
+              required: true,
+              message: '请选择终止时间',
+            },
+          ]}
+        >
+          <DatePicker
+            format="YYYY-MM-DD HH:mm:ss"
+            disabledDate={disabledDate}
+            disabledTime={disabledDateTime}
+            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
+          />
+        </Form.Item>
+
         <Form.Item>
           <Button loading={s.createLoading} type="primary" htmlType="submit">
             创建
@@ -320,6 +357,18 @@ const Home = () => {
                 setS({ todo: { ...s.todo, tagId: v } });
               }}
               options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
+            />
+          </div>
+          <div>
+            <DatePicker
+              value={dayjs(s.todo?.deadline)}
+              onChange={(date) => {
+                setS({ todo: { ...s.todo, deadline: date } });
+              }}
+              format="YYYY-MM-DD HH:mm:ss"
+              disabledDate={disabledDate}
+              disabledTime={disabledDateTime}
+              showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
             />
           </div>
         </Modal>
