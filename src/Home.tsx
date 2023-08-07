@@ -185,8 +185,8 @@ const Home = () => {
                       {item.detail}
                       <Space>
                         <Tag>{item.tagName}</Tag>
-                        <Tag>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Tag>
-                        <Tag>{dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        <Tag>{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        <Tag>{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                       </Space>
                     </>
                   }
@@ -226,8 +226,8 @@ const Home = () => {
                       {item.detail}
                       <Space>
                         <Tag>{item.tagName}</Tag>
-                        <Tag>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Tag>
-                        <Tag>{dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        <Tag>{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        <Tag>{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                       </Space>
                     </>
                   }
