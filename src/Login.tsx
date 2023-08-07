@@ -1,5 +1,5 @@
 import type { TabsProps } from 'antd';
-import { Button, Form, Input, Tabs } from 'antd';
+import { Button, Form, Input, Tabs, message } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import serviceAxios from './http';
@@ -33,6 +33,8 @@ const Login = () => {
         if (res && res.data && res.data.token) {
           localStorage.setItem('token', res.data.token);
           navigate('/');
+        } else {
+          message.error('用户名或密码错误');
         }
       })
       .finally(() => {
