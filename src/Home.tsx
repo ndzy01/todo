@@ -214,7 +214,7 @@ const Home = () => {
                   description={
                     <>
                       {item.detail}
-                      <Space>
+                      <Space style={{ marginLeft: 8 }}>
                         <Tag>{item.tagName}</Tag>
                         <Tag>{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                         <Tag>{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
