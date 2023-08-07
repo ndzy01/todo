@@ -236,6 +236,16 @@ const Home = () => {
     <div>
       <Space style={{ marginBottom: 16 }}>
         <Button onClick={goTag}>标签管理</Button>
+        <Select
+          placeholder="请选择标签"
+          allowClear
+          style={{ width: 300 }}
+          value={s.tagId}
+          onChange={(v) => {
+            setS({ tagId: v });
+          }}
+          options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
+        />
         <Button onClick={() => setS({ isShowCreate: !s.isShowCreate })}>
           {s.isShowCreate ? '关闭创建' : '打开创建'}
         </Button>
@@ -292,16 +302,6 @@ const Home = () => {
           </Form.Item>
         </Form>
       )}
-
-      <Select
-        allowClear
-        style={{ width: 300 }}
-        value={s.tagId}
-        onChange={(v) => {
-          setS({ tagId: v });
-        }}
-        options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
-      />
 
       <Tabs
         defaultActiveKey="1"
