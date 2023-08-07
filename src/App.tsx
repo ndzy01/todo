@@ -1,5 +1,5 @@
 import { useMount } from 'ahooks';
-import { Routes, Route, Outlet, Link } from 'react-router-dom';
+import { Routes, Route, Outlet, Link, useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
 import { useState } from 'react';
 import Login from './Login';
@@ -20,14 +20,15 @@ const App = () => {
 export default App;
 
 const Layout = () => {
+  const navigate = useNavigate();
   const [s, setS] = useState(false);
 
   useMount(() => {
     const url = localStorage.getItem('url') || '';
-    if (url === 'http://localhost:3000') {
-      setS(false);
-    } else {
+    if (url === 'https://ndzy-server.vercel.app') {
       setS(true);
+    } else {
+      setS(false);
     }
   });
 
@@ -39,11 +40,13 @@ const Layout = () => {
             setS(false);
             localStorage.setItem('url', 'http://localhost:3000');
             localStorage.setItem('token', '');
+            navigate('/');
             window.location.reload();
           } else {
             setS(true);
             localStorage.setItem('url', 'https://ndzy-server.vercel.app');
             localStorage.setItem('token', '');
+            navigate('/');
             window.location.reload();
           }
         }}
