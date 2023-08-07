@@ -47,6 +47,7 @@ serviceAxios.interceptors.response.use(
           message = '您未登录，或者登录已经超时，请先登录！';
           localStorage.setItem('token', '');
           antMsg.error(message);
+          window.location.reload();
           break;
         case 403:
           message = '您没有权限操作！';
