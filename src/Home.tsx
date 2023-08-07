@@ -184,9 +184,9 @@ const Home = () => {
                     <>
                       {item.detail}
                       <Space>
-                        <Tag> {item.tagName}</Tag>
-                        <Tag> {item.createdAt}</Tag>
-                        <Tag> {item.updatedAt}</Tag>
+                        <Tag>{item.tagName}</Tag>
+                        <Tag>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        <Tag>{dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Tag>
                       </Space>
                     </>
                   }
@@ -225,9 +225,9 @@ const Home = () => {
                     <>
                       {item.detail}
                       <Space>
-                        <Tag> {item.tagName}</Tag>
-                        <Tag> {item.createdAt}</Tag>
-                        <Tag> {item.updatedAt}</Tag>
+                        <Tag>{item.tagName}</Tag>
+                        <Tag>{dayjs(item.createdAt).format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        <Tag>{dayjs(item.updatedAt).format('YYYY-MM-DD HH:mm:ss')}</Tag>
                       </Space>
                     </>
                   }
