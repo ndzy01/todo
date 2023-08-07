@@ -3,21 +3,28 @@ import { useMount } from 'ahooks';
 import serviceAxios from './http';
 import { useEffect, useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { InputRef, message, Space } from 'antd';
+import { InputRef, message, Space, Spin } from 'antd';
 import { Input, Tag, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const ITag: React.FC = () => {
   const navigate = useNavigate();
   const [tags, setTags] = useState<{ id: string; name: string }[]>([]);
+  const [loading, setLoading] = useState(false);
   const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
   const inputRef = useRef<InputRef>(null);
 
   const getAllTags = () => {
-    serviceAxios('/tags').then((res) => {
-      setTags(res.data || []);
-    });
+    setLoading(true);
+    serviceAxios('/tags')
+      .then((res) => {
+        setTags(res.data || []);
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   useMount(() => {
@@ -31,10 +38,17 @@ const ITag: React.FC = () => {
   }, [inputVisible]);
 
   const handleClose = (id: string) => {
-    serviceAxios.delete(`/tags/${id}`).then(() => {
-      message.success('已删除');
-      getAllTags();
-    });
+    setLoading(true);
+    serviceAxios
+      .delete(`/tags/${id}`)
+      .then(() => {
+        message.success('已删除');
+        getAllTags();
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const showInput = () => {
@@ -53,12 +67,19 @@ const ITag: React.FC = () => {
       return;
     }
 
-    serviceAxios.post('/tags', { name: inputValue }).then(() => {
-      getAllTags();
-      setInputVisible(false);
-      setInputValue('');
-      message.success('添加成功');
-    });
+    setLoading(true);
+    serviceAxios
+      .post('/tags', { name: inputValue })
+      .then(() => {
+        getAllTags();
+        setInputVisible(false);
+        setInputValue('');
+        message.success('添加成功');
+        setLoading(false);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const goHome = () => {
@@ -67,40 +88,46 @@ const ITag: React.FC = () => {
 
   return (
     <div>
-      <Space>
-        <Button onClick={goHome}>返回首页</Button>
-        <Space>
-          {tags.map((item) => (
-            <Tag
-              key={item.id}
-              closable
-              onClose={(e) => {
-                e.preventDefault();
-                handleClose(item.id);
-              }}
-            >
-              {item.name}
-            </Tag>
-          ))}
-        </Space>
-      </Space>
-      <div style={{ padding: 16 }}>
-        {inputVisible ? (
-          <Input.TextArea
-            ref={inputRef}
-            size="small"
-            style={{ width: 300 }}
-            value={inputValue}
-            onChange={handleInputChange}
-            onBlur={handleInputConfirm}
-            onPressEnter={handleInputConfirm}
-          />
-        ) : (
-          <Tag onClick={showInput}>
-            <PlusOutlined /> 添加标签
-          </Tag>
-        )}
-      </div>
+      <Button style={{ marginRight: 16 }} onClick={goHome}>
+        返回首页
+      </Button>
+      {loading ? (
+        <Spin />
+      ) : (
+        <>
+          <Space>
+            {tags.map((item) => (
+              <Tag
+                key={item.id}
+                closable
+                onClose={(e) => {
+                  e.preventDefault();
+                  handleClose(item.id);
+                }}
+              >
+                {item.name}
+              </Tag>
+            ))}
+          </Space>
+          <div style={{ padding: 16 }}>
+            {inputVisible ? (
+              <Input.TextArea
+                ref={inputRef}
+                size="small"
+                style={{ width: 300 }}
+                value={inputValue}
+                onChange={handleInputChange}
+                onBlur={handleInputConfirm}
+                onPressEnter={handleInputConfirm}
+              />
+            ) : (
+              <Tag onClick={showInput}>
+                <PlusOutlined /> 添加标签
+              </Tag>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

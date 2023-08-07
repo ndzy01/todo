@@ -239,17 +239,19 @@ const Home = () => {
         <Select
           placeholder="请选择标签"
           allowClear
-          style={{ width: 300 }}
+          style={{ width: 200 }}
           value={s.tagId}
           onChange={(v) => {
             setS({ tagId: v });
           }}
           options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
         />
+      </Space>
+      <div style={{ marginBottom: 16 }}>
         <Button onClick={() => setS({ isShowCreate: !s.isShowCreate })}>
           {s.isShowCreate ? '关闭创建' : '打开创建'}
         </Button>
-      </Space>
+      </div>
       {s.isShowCreate && (
         <Form name="register" onFinish={create} style={{ maxWidth: 336 }} scrollToFirstError form={form}>
           <Form.Item name="name" label="名称">
