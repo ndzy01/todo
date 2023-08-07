@@ -46,10 +46,12 @@ const Layout = () => {
           if (s) {
             setS(false);
             localStorage.setItem('url', 'http://localhost:3000');
+            localStorage.setItem('token', '');
             window.location.reload();
           } else {
             setS(true);
             localStorage.setItem('url', 'https://ndzy-server.vercel.app');
+            localStorage.setItem('token', '');
             window.location.reload();
           }
         }}
