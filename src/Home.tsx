@@ -91,9 +91,7 @@ const Home = () => {
     setS({ loading: true });
     serviceAxios
       .patch(`/todos/${s.todo.id}`, {
-        name: s.todo?.name,
-        detail: s.todo?.detail,
-        link: s.todo?.link,
+        ...(s.todo || {}),
       })
       .then(() => {
         getAllTodo();
