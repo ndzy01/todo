@@ -1,7 +1,7 @@
 import { useMount } from 'ahooks';
 import { Routes, Route, Outlet, Link, useNavigate } from 'react-router-dom';
 import { Button } from 'antd';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Login from './Login';
 import Home from './Home';
 
