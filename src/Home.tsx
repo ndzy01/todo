@@ -8,22 +8,6 @@ import type { RangePickerProps } from 'antd/es/date-picker';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
 
-interface ITodo {
-  id: string;
-  name: string;
-  detail: string;
-  link: string;
-  [k: string]: any;
-}
-
-interface ITodoRecord {
-  name: string;
-  detail: string;
-  link: string;
-  [k: string]: any;
-}
-
-const ContainerHeight = 888;
 const range = (start: number, end: number) => {
   const result = [];
   for (let i = start; i < end; i++) {
@@ -31,6 +15,8 @@ const range = (start: number, end: number) => {
   }
   return result;
 };
+
+const ContainerHeight = 888;
 const Home = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
@@ -55,6 +41,10 @@ const Home = () => {
     tags: [],
     tagId: '',
   });
+
+  const goTag = () => {
+    navigate('/tag');
+  };
 
   const getAllTodo = () => {
     setS({ loading: true });
@@ -174,7 +164,7 @@ const Home = () => {
                         item.name
                       )}
 
-                      <Space>
+                      <Space style={{ marginLeft: 8 }}>
                         <Button onClick={() => setS({ isShowEdit: true, todo: item })}> 编辑</Button>
                         <Button onClick={() => finish(item)}> 完成</Button>
                       </Space>
@@ -183,7 +173,7 @@ const Home = () => {
                   description={
                     <>
                       {item.detail}
-                      <Space>
+                      <Space style={{ marginLeft: 8 }}>
                         <Tag>{item.tagName}</Tag>
                         <Tag>{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                         <Tag>{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
@@ -242,6 +232,9 @@ const Home = () => {
 
   return (
     <div>
+      <Button style={{ marginBottom: 16 }} onClick={goTag}>
+        标签管理
+      </Button>
       <Form name="register" onFinish={create} style={{ maxWidth: 336 }} scrollToFirstError form={form}>
         <Form.Item name="name" label="名称">
           <Input.TextArea rows={1} />
@@ -294,6 +287,7 @@ const Home = () => {
       </Form>
 
       <Select
+        allowClear
         style={{ width: 300 }}
         value={s.tagId}
         onChange={(v) => {
