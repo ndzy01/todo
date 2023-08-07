@@ -1,5 +1,7 @@
 import { useMount } from 'ahooks';
 import { Routes, Route, Outlet, Link, useNavigate } from 'react-router-dom';
+import { Button } from 'antd';
+import { useState, useEffect } from 'react';
 import Login from './Login';
 import Home from './Home';
 
@@ -26,8 +28,34 @@ const App = () => {
 export default App;
 
 const Layout = () => {
+  const [s, setS] = useState(false);
+
+  useMount(() => {
+    const url = localStorage.getItem('url') || '';
+    if (url === 'http://localhost:3000') {
+      setS(false);
+    } else {
+      setS(true);
+    }
+  });
+
   return (
     <div style={{ padding: 16 }}>
+      <Button
+        onClick={() => {
+          if (s) {
+            setS(false);
+            localStorage.setItem('url', 'http://localhost:3000');
+            window.location.reload();
+          } else {
+            setS(true);
+            localStorage.setItem('url', 'https://ndzy-server.vercel.app');
+            window.location.reload();
+          }
+        }}
+      >
+        {s ? '线上' : '日常'}
+      </Button>
       <Outlet />
     </div>
   );

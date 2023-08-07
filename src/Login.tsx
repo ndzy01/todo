@@ -30,8 +30,10 @@ const Login = () => {
     serviceAxios
       .post('/users/login', { ...values })
       .then((res) => {
-        localStorage.setItem('token', res.data.token);
-        navigate('/');
+        if (res && res.data && res.data.token) {
+          localStorage.setItem('token', res.data.token);
+          navigate('/');
+        }
       })
       .finally(() => {
         setLoading(false);
