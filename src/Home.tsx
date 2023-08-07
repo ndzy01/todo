@@ -91,7 +91,11 @@ const Home = () => {
     setS({ loading: true });
     serviceAxios
       .patch(`/todos/${s.todo.id}`, {
-        ...(s.todo || {}),
+        name: s.todo.name,
+        detail: s.todo.detail,
+        link: s.todo.link,
+        deadline: s.todo.deadline,
+        tagId: s.todo.tagId,
       })
       .then(() => {
         getAllTodo();
@@ -266,7 +270,7 @@ const Home = () => {
 
         <Form.Item
           name="deadline"
-          label="标签"
+          label="终止时间"
           rules={[
             {
               required: true,
