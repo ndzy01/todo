@@ -88,9 +88,11 @@ const ITag: React.FC = () => {
 
   return (
     <div>
-      <Button style={{ marginRight: 16 }} onClick={goHome}>
-        返回首页
-      </Button>
+      <div style={{ marginBottom: 16 }}>
+        <Button type="link" onClick={goHome}>
+          返回首页
+        </Button>
+      </div>
       {loading ? (
         <Spin />
       ) : (

@@ -235,7 +235,9 @@ const Home = () => {
   return (
     <div>
       <Space style={{ marginBottom: 16 }}>
-        <Button onClick={goTag}>标签管理</Button>
+        <Button type="link" onClick={goTag}>
+          标签管理
+        </Button>
         <Select
           placeholder="请选择标签"
           allowClear
