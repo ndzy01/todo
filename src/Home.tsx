@@ -24,6 +24,7 @@ const Home = () => {
     list: ITodo[];
     delList: ITodo[];
     isShowEdit: boolean;
+    isShowCreate: boolean;
     todo: ITodoRecord;
     loading: boolean;
     tabKey: string;
@@ -34,6 +35,7 @@ const Home = () => {
     list: [],
     delList: [],
     isShowEdit: false,
+    isShowCreate: false,
     todo: { name: '', detail: '', link: '' },
     loading: false,
     tabKey: '1',
@@ -232,59 +234,64 @@ const Home = () => {
 
   return (
     <div>
-      <Button style={{ marginBottom: 16 }} onClick={goTag}>
-        标签管理
-      </Button>
-      <Form name="register" onFinish={create} style={{ maxWidth: 336 }} scrollToFirstError form={form}>
-        <Form.Item name="name" label="名称">
-          <Input.TextArea rows={1} />
-        </Form.Item>
+      <Space style={{ marginBottom: 16 }}>
+        <Button onClick={goTag}>标签管理</Button>
+        <Button onClick={() => setS({ isShowCreate: !s.isShowCreate })}>
+          {s.isShowCreate ? '关闭创建' : '打开创建'}
+        </Button>
+      </Space>
+      {s.isShowCreate && (
+        <Form name="register" onFinish={create} style={{ maxWidth: 336 }} scrollToFirstError form={form}>
+          <Form.Item name="name" label="名称">
+            <Input.TextArea rows={1} />
+          </Form.Item>
 
-        <Form.Item name="detail" label="描述">
-          <Input.TextArea rows={1} />
-        </Form.Item>
+          <Form.Item name="detail" label="描述">
+            <Input.TextArea rows={1} />
+          </Form.Item>
 
-        <Form.Item name="link" label="链接">
-          <Input.TextArea rows={1} />
-        </Form.Item>
+          <Form.Item name="link" label="链接">
+            <Input.TextArea rows={1} />
+          </Form.Item>
 
-        <Form.Item
-          name="tagId"
-          label="标签"
-          rules={[
-            {
-              required: true,
-              message: '请选择一个标签',
-            },
-          ]}
-        >
-          <Select options={s.tags.map((item) => ({ label: item.name, value: item.id }))} />
-        </Form.Item>
+          <Form.Item
+            name="tagId"
+            label="标签"
+            rules={[
+              {
+                required: true,
+                message: '请选择一个标签',
+              },
+            ]}
+          >
+            <Select options={s.tags.map((item) => ({ label: item.name, value: item.id }))} />
+          </Form.Item>
 
-        <Form.Item
-          name="deadline"
-          label="终止时间"
-          rules={[
-            {
-              required: true,
-              message: '请选择终止时间',
-            },
-          ]}
-        >
-          <DatePicker
-            format="YYYY-MM-DD HH:mm:ss"
-            disabledDate={disabledDate}
-            disabledTime={disabledDateTime}
-            showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
-          />
-        </Form.Item>
+          <Form.Item
+            name="deadline"
+            label="终止时间"
+            rules={[
+              {
+                required: true,
+                message: '请选择终止时间',
+              },
+            ]}
+          >
+            <DatePicker
+              format="YYYY-MM-DD HH:mm:ss"
+              disabledDate={disabledDate}
+              disabledTime={disabledDateTime}
+              showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
+            />
+          </Form.Item>
 
-        <Form.Item>
-          <Button loading={s.createLoading} type="primary" htmlType="submit">
-            创建
-          </Button>
-        </Form.Item>
-      </Form>
+          <Form.Item>
+            <Button loading={s.createLoading} type="primary" htmlType="submit">
+              创建
+            </Button>
+          </Form.Item>
+        </Form>
+      )}
 
       <Select
         allowClear
