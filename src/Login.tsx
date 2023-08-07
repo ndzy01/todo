@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import type { TabsProps } from 'antd';
 import { Button, Form, Input, Tabs, message } from 'antd';
 import { useState } from 'react';

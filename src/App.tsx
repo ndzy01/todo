@@ -1,9 +1,10 @@
 import { useMount } from 'ahooks';
 import { Routes, Route, Outlet, Link, useNavigate } from 'react-router-dom';
-import { Button } from 'antd';
+import { Button, Tag } from 'antd';
 import { useState } from 'react';
 import Login from './Login';
 import Home from './Home';
+import ITag from './Tag';
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const Layout = () => {
     if (url === 'https://ndzy-server.vercel.app') {
       setS(true);
     } else {
+      localStorage.setItem('url', 'http://localhost:3000');
       setS(false);
     }
   });
@@ -53,6 +55,8 @@ const Layout = () => {
       >
         {s ? '线上' : '日常'}
       </Button>
+      <Tag>{localStorage.getItem('url') || ''}</Tag>
+      <ITag />
       <Outlet />
     </div>
   );

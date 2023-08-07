@@ -1,6 +1,7 @@
-import { useMount, useSetState } from 'ahooks';
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMount, useSetState, useUpdateEffect } from 'ahooks';
 import type { TabsProps } from 'antd';
-import { Button, Input, List, Modal, Space, Tabs, Form, Tag } from 'antd';
+import { Button, Input, List, Modal, Space, Tabs, Form, Tag, Select } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
@@ -8,14 +9,14 @@ import serviceAxios from './http';
 interface ITodo {
   id: string;
   name: string;
-  describe: string;
+  detail: string;
   link: string;
   [k: string]: any;
 }
 
 interface ITodoRecord {
   name: string;
-  describe: string;
+  detail: string;
   link: string;
   [k: string]: any;
 }
@@ -32,35 +33,36 @@ const Home = () => {
     loading: boolean;
     tabKey: string;
     createLoading: boolean;
+    tags: { id: string; name: string }[];
+    tagId: string;
   }>({
     list: [],
     delList: [],
     isShowEdit: false,
-    todo: { name: '', describe: '', link: '' },
+    todo: { name: '', detail: '', link: '' },
     loading: false,
     tabKey: '1',
     createLoading: false,
+    tags: [],
+    tagId: '',
   });
 
   const getAllTodo = () => {
     setS({ loading: true });
     serviceAxios
-      .get('/todomysql/0')
+      .get('/todomysql', { params: { isDel: '1', tagId: s.tagId } })
       .then((res) => {
-        setS({ list: res.data, loading: false });
+        const { list = [], delList = [] } = res.data;
+
+        setS({ list, delList, loading: false });
       })
       .finally(() => {
         setS({ loading: false });
       });
 
-    serviceAxios
-      .get('/todomysql/1')
-      .then((res) => {
-        setS({ delList: res.data, loading: false });
-      })
-      .finally(() => {
-        setS({ loading: false });
-      });
+    serviceAxios('/tags').then((res) => {
+      setS({ tags: res.data || [] });
+    });
   };
 
   const create = (values: any) => {
@@ -81,12 +83,12 @@ const Home = () => {
     serviceAxios
       .patch(`/todomysql/${s.todo.id}`, {
         name: s.todo?.name,
-        describe: s.todo?.describe,
+        detail: s.todo?.detail,
         link: s.todo?.link,
       })
       .then(() => {
         getAllTodo();
-        setS({ isShowEdit: false, todo: { name: '', describe: '', link: '' } });
+        setS({ isShowEdit: false, todo: { name: '', detail: '', link: '' } });
       });
   };
 
@@ -127,6 +129,10 @@ const Home = () => {
     getAllTodo();
   });
 
+  useUpdateEffect(() => {
+    getAllTodo();
+  }, [s.tagId]);
+
   const items: TabsProps['items'] = [
     {
       key: '1',
@@ -155,8 +161,9 @@ const Home = () => {
                   }
                   description={
                     <>
-                      {item.describe}
+                      {item.detail}
                       <Space>
+                        <Tag> {item.tagName}</Tag>
                         <Tag> {item.createdAt}</Tag>
                         <Tag> {item.updatedAt}</Tag>
                       </Space>
@@ -195,8 +202,9 @@ const Home = () => {
                   }
                   description={
                     <>
-                      {item.describe}
+                      {item.detail}
                       <Space>
+                        <Tag> {item.tagName}</Tag>
                         <Tag> {item.createdAt}</Tag>
                         <Tag> {item.updatedAt}</Tag>
                       </Space>
@@ -218,12 +226,16 @@ const Home = () => {
           <Input.TextArea rows={1} />
         </Form.Item>
 
-        <Form.Item name="describe" label="描述">
+        <Form.Item name="detail" label="描述">
           <Input.TextArea rows={1} />
         </Form.Item>
 
         <Form.Item name="link" label="链接">
           <Input.TextArea rows={1} />
+        </Form.Item>
+
+        <Form.Item name="tagId" label="标签">
+          <Select options={s.tags.map((item) => ({ label: item.name, value: item.id }))} />
         </Form.Item>
 
         <Form.Item>
@@ -232,6 +244,15 @@ const Home = () => {
           </Button>
         </Form.Item>
       </Form>
+
+      <Select
+        style={{ width: 300 }}
+        value={s.tagId}
+        onChange={(v) => {
+          setS({ tagId: v });
+        }}
+        options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
+      />
 
       <Tabs
         defaultActiveKey="1"
@@ -265,14 +286,14 @@ const Home = () => {
           <div style={{ marginBottom: 8 }}>
             <Input.TextArea
               rows={3}
-              value={s.todo?.describe}
+              value={s.todo?.detail}
               onChange={(e: { target: { value: any } }) => {
-                setS({ todo: { ...s.todo, describe: e.target.value } });
+                setS({ todo: { ...s.todo, detail: e.target.value } });
               }}
               placeholder="描述"
             />
           </div>
-          <div>
+          <div style={{ marginBottom: 8 }}>
             <Input.TextArea
               rows={3}
               value={s.todo?.link}
@@ -280,6 +301,15 @@ const Home = () => {
                 setS({ todo: { ...s.todo, link: e.target.value } });
               }}
               placeholder="链接"
+            />
+          </div>
+          <div>
+            <Select
+              value={s.todo?.tagId}
+              onChange={(v) => {
+                setS({ todo: { ...s.todo, tagId: v } });
+              }}
+              options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
             />
           </div>
         </Modal>
