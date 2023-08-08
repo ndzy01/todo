@@ -3,7 +3,7 @@ import { useMount } from 'ahooks';
 import serviceAxios from './http';
 import { useEffect, useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
-import { InputRef, message, Space, Spin } from 'antd';
+import { InputRef, Space, Spin } from 'antd';
 import { Input, Tag, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
@@ -42,7 +42,6 @@ const ITag: React.FC = () => {
     serviceAxios
       .delete(`/tags/${id}`)
       .then(() => {
-        message.success('已删除');
         getAllTags();
         setLoading(false);
       })
@@ -74,7 +73,6 @@ const ITag: React.FC = () => {
         getAllTags();
         setInputVisible(false);
         setInputValue('');
-        message.success('添加成功');
         setLoading(false);
       })
       .finally(() => {

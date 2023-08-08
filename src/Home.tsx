@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount, useSetState, useUpdateEffect } from 'ahooks';
 import type { TabsProps } from 'antd';
-import { Button, Input, List, Modal, Space, Tabs, Form, Tag, Select, DatePicker } from 'antd';
+import { Button, Input, List, Modal, Space, Tabs, Form, Tag, Select, DatePicker, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import type { RangePickerProps } from 'antd/es/date-picker';
@@ -80,6 +80,11 @@ const Home = () => {
   };
 
   const edit = () => {
+    if (!s.todo.name) {
+      message.error('名称不能为空');
+      return;
+    }
+
     setS({ loading: true });
     serviceAxios
       .patch(`/todos/${s.todo.id}`, {
@@ -256,7 +261,16 @@ const Home = () => {
       </div>
       {s.isShowCreate && (
         <Form name="register" onFinish={create} style={{ maxWidth: 336 }} scrollToFirstError form={form}>
-          <Form.Item name="name" label="名称">
+          <Form.Item
+            name="name"
+            label="名称"
+            rules={[
+              {
+                required: true,
+                message: '名称不能为空',
+              },
+            ]}
+          >
             <Input.TextArea rows={1} />
           </Form.Item>
 
