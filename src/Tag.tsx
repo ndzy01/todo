@@ -39,15 +39,9 @@ const ITag: React.FC = () => {
 
   const handleClose = (id: string) => {
     setLoading(true);
-    serviceAxios
-      .delete(`/tags/${id}`)
-      .then(() => {
-        getAllTags();
-        setLoading(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    serviceAxios.delete(`/tags/${id}`).then(() => {
+      getAllTags();
+    });
   };
 
   const showInput = () => {
@@ -67,17 +61,11 @@ const ITag: React.FC = () => {
     }
 
     setLoading(true);
-    serviceAxios
-      .post('/tags', { name: inputValue })
-      .then(() => {
-        getAllTags();
-        setInputVisible(false);
-        setInputValue('');
-        setLoading(false);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    serviceAxios.post('/tags', { name: inputValue }).then(() => {
+      getAllTags();
+      setInputVisible(false);
+      setInputValue('');
+    });
   };
 
   const goHome = () => {
