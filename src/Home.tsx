@@ -1,25 +1,18 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount, useSetState, useUpdateEffect } from 'ahooks';
 import type { TabsProps } from 'antd';
-import { Button, Input, List, Modal, Space, Tabs, Form, Tag, Select, DatePicker, message } from 'antd';
+import { Button, Input, List, Modal, Space, Tabs, Tag, Select, DatePicker, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import type { RangePickerProps } from 'antd/es/date-picker';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
-
-const range = (start: number, end: number) => {
-  const result = [];
-  for (let i = start; i < end; i++) {
-    result.push(i);
-  }
-  return result;
-};
+import Editor from './component/Editor';
+import Preview from './component/preview';
+import { disabledDate, disabledDateTime } from './utils';
 
 const ContainerHeight = 888;
 const Home = () => {
   const navigate = useNavigate();
-  const [form] = Form.useForm();
   const [s, setS] = useSetState<{
     list: ITodo[];
     delList: ITodo[];
@@ -28,7 +21,6 @@ const Home = () => {
     todo: ITodoRecord;
     loading: boolean;
     tabKey: string;
-    createLoading: boolean;
     tags: { id: string; name: string }[];
     tagId: string;
   }>({
@@ -39,13 +31,16 @@ const Home = () => {
     todo: { name: '', detail: '', link: '' },
     loading: false,
     tabKey: '1',
-    createLoading: false,
     tags: [],
     tagId: '',
   });
 
   const goTag = () => {
     navigate('/tag');
+  };
+
+  const goCreate = () => {
+    navigate('/create');
   };
 
   const getAllTodo = () => {
@@ -64,19 +59,6 @@ const Home = () => {
     serviceAxios('/tags').then((res) => {
       setS({ tags: res.data || [] });
     });
-  };
-
-  const create = (values: any) => {
-    setS({ createLoading: true });
-    serviceAxios
-      .post('/todos', { ...values })
-      .then(() => {
-        getAllTodo();
-      })
-      .finally(() => {
-        setS({ createLoading: false });
-        form.resetFields();
-      });
   };
 
   const edit = () => {
@@ -129,22 +111,14 @@ const Home = () => {
       });
   };
 
-  const disabledDate: RangePickerProps['disabledDate'] = (current) => {
-    return current && current < dayjs().endOf('day');
-  };
-
-  const disabledDateTime = () => ({
-    disabledHours: () => range(0, 24).splice(4, 20),
-    disabledMinutes: () => range(30, 60),
-    disabledSeconds: () => [55, 56],
-  });
-
   useMount(() => {
     const token = localStorage.getItem('token');
 
-    if (!token) navigate('/login');
-
-    getAllTodo();
+    if (!token) {
+      navigate('/login');
+    } else {
+      getAllTodo();
+    }
   });
 
   useUpdateEffect(() => {
@@ -179,8 +153,8 @@ const Home = () => {
                   }
                   description={
                     <>
-                      {item.detail}
-                      <Space style={{ marginLeft: 8 }}>
+                      <Preview md={item.detail} />
+                      <Space>
                         <Tag>{item.tagName}</Tag>
                         <Tag>{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                         <Tag>{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
@@ -220,8 +194,8 @@ const Home = () => {
                   }
                   description={
                     <>
-                      {item.detail}
-                      <Space style={{ marginLeft: 8 }}>
+                      <Preview md={item.detail} />
+                      <Space>
                         <Tag>{item.tagName}</Tag>
                         <Tag>{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                         <Tag>{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
@@ -240,6 +214,9 @@ const Home = () => {
   return (
     <div>
       <Space style={{ marginBottom: 16 }}>
+        <Button type="link" onClick={goCreate}>
+          创建待办
+        </Button>
         <Button type="link" onClick={goTag}>
           标签管理
         </Button>
@@ -254,72 +231,6 @@ const Home = () => {
           options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
         />
       </Space>
-      <div style={{ marginBottom: 16 }}>
-        <Button onClick={() => setS({ isShowCreate: !s.isShowCreate })}>
-          {s.isShowCreate ? '关闭创建' : '打开创建'}
-        </Button>
-      </div>
-      {s.isShowCreate && (
-        <Form name="register" onFinish={create} style={{ maxWidth: 336 }} scrollToFirstError form={form}>
-          <Form.Item
-            name="name"
-            label="名称"
-            rules={[
-              {
-                required: true,
-                message: '名称不能为空',
-              },
-            ]}
-          >
-            <Input.TextArea rows={1} />
-          </Form.Item>
-
-          <Form.Item name="detail" label="描述">
-            <Input.TextArea rows={1} />
-          </Form.Item>
-
-          <Form.Item name="link" label="链接">
-            <Input.TextArea rows={1} />
-          </Form.Item>
-
-          <Form.Item
-            name="tagId"
-            label="标签"
-            rules={[
-              {
-                required: true,
-                message: '请选择一个标签',
-              },
-            ]}
-          >
-            <Select options={s.tags.map((item) => ({ label: item.name, value: item.id }))} />
-          </Form.Item>
-
-          <Form.Item
-            name="deadline"
-            label="终止时间"
-            rules={[
-              {
-                required: true,
-                message: '请选择终止时间',
-              },
-            ]}
-          >
-            <DatePicker
-              format="YYYY-MM-DD HH:mm:ss"
-              disabledDate={disabledDate}
-              disabledTime={disabledDateTime}
-              showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
-            />
-          </Form.Item>
-
-          <Form.Item>
-            <Button loading={s.createLoading} type="primary" htmlType="submit">
-              创建
-            </Button>
-          </Form.Item>
-        </Form>
-      )}
 
       <Tabs
         defaultActiveKey="1"
@@ -351,13 +262,12 @@ const Home = () => {
             />
           </div>
           <div style={{ marginBottom: 8 }}>
-            <Input.TextArea
-              rows={3}
-              value={s.todo?.detail}
-              onChange={(e: { target: { value: any } }) => {
-                setS({ todo: { ...s.todo, detail: e.target.value } });
-              }}
+            <Editor
               placeholder="描述"
+              value={s.todo?.detail}
+              onChange={(v: string) => {
+                setS({ todo: { ...s.todo, detail: v } });
+              }}
             />
           </div>
           <div style={{ marginBottom: 8 }}>
