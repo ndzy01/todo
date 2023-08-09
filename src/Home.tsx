@@ -7,7 +7,7 @@ import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
 import Editor from './component/Editor';
-import Preview from './component/preview';
+import Preview from './component/Preview';
 import { disabledDate, disabledDateTime } from './utils';
 
 const ContainerHeight = 888;
