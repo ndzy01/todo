@@ -16,6 +16,10 @@ const Layout = () => {
     navigate('/create');
   };
 
+  const goHome = () => {
+    navigate('/');
+  };
+
   const onChange = (e: RadioChangeEvent) => {
     setS(e.target.value);
 
@@ -48,16 +52,19 @@ const Layout = () => {
   return (
     <div style={{ padding: 16 }}>
       <Space style={{ paddingBottom: 16 }}>
-        <Radio.Group onChange={onChange} value={s}>
-          <Radio value={'1'}>线上</Radio>
-          <Radio value={'2'}>日常</Radio>
-        </Radio.Group>
+        <Button type="link" onClick={goHome}>
+          首页
+        </Button>
         <Button type="link" onClick={goCreate}>
           创建待办
         </Button>
         <Button type="link" onClick={goTag}>
           标签管理
         </Button>
+        <Radio.Group onChange={onChange} value={s}>
+          <Radio value={'1'}>线上</Radio>
+          <Radio value={'2'}>日常</Radio>
+        </Radio.Group>
       </Space>
       <Outlet />
     </div>

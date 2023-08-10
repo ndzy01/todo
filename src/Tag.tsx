@@ -4,11 +4,9 @@ import serviceAxios from './http';
 import { useEffect, useRef, useState } from 'react';
 import { PlusOutlined } from '@ant-design/icons';
 import { InputRef, Space, Spin } from 'antd';
-import { Input, Tag, Button } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { Input, Tag } from 'antd';
 
 const ITag: React.FC = () => {
-  const navigate = useNavigate();
   const [tags, setTags] = useState<{ id: string; name: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [inputVisible, setInputVisible] = useState(false);
@@ -68,17 +66,8 @@ const ITag: React.FC = () => {
     });
   };
 
-  const goHome = () => {
-    navigate('/');
-  };
-
   return (
     <div>
-      <div style={{ marginBottom: 16 }}>
-        <Button type="link" onClick={goHome}>
-          返回首页
-        </Button>
-      </div>
       {loading ? (
         <Spin />
       ) : (
