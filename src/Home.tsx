@@ -22,7 +22,7 @@ const Home = () => {
     loading: boolean;
     tabKey: string;
     tags: { id: string; name: string }[];
-    tagId: string;
+    tagId?: string;
   }>({
     list: [],
     delList: [],
@@ -32,7 +32,6 @@ const Home = () => {
     loading: false,
     tabKey: '1',
     tags: [],
-    tagId: '',
   });
 
   const getAllTodo = () => {
@@ -248,15 +247,27 @@ const Home = () => {
             />
           </div>
           <div style={{ marginBottom: 8 }}>
+            <DatePicker
+              value={dayjs(s.todo?.deadline)}
+              onChange={(date) => {
+                setS({ todo: { ...s.todo, deadline: date } });
+              }}
+              format="YYYY-MM-DD HH:mm:ss"
+              disabledDate={disabledDate}
+              disabledTime={disabledDateTime}
+              showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
+            />
+          </div>
+          <div style={{ marginBottom: 8 }}>
             <Editor
-              placeholder="描述"
+              placeholder="请输入"
               value={s.todo?.detail}
               onChange={(v: string) => {
                 setS({ todo: { ...s.todo, detail: v } });
               }}
             />
           </div>
-          <div style={{ marginBottom: 8 }}>
+          <div>
             <Input.TextArea
               rows={3}
               value={s.todo?.link}
@@ -274,18 +285,6 @@ const Home = () => {
                 setS({ todo: { ...s.todo, tagId: v } });
               }}
               options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
-            />
-          </div>
-          <div>
-            <DatePicker
-              value={dayjs(s.todo?.deadline)}
-              onChange={(date) => {
-                setS({ todo: { ...s.todo, deadline: date } });
-              }}
-              format="YYYY-MM-DD HH:mm:ss"
-              disabledDate={disabledDate}
-              disabledTime={disabledDateTime}
-              showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
             />
           </div>
         </Modal>

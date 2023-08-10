@@ -8,10 +8,8 @@ antMsg.config({
   maxCount: 1,
 });
 
-const url = localStorage.getItem('url') || '';
-
 const serviceAxios = axios.create({
-  baseURL: url, // 基础请求地址
+  baseURL: 'https://ndzy-server.vercel.app', // 基础请求地址
   timeout: 10000, // 请求超时设置
   withCredentials: false, // 跨域请求是否需要携带 cookie
 });

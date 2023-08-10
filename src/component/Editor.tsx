@@ -15,7 +15,7 @@ const Editor = ({ value, onChange, placeholder = '请输入' }: any) => {
       input: (v) => {
         onChange(v);
       },
-      minHeight: 300,
+      minHeight: 180,
       placeholder,
       value: value || '',
       after: () => {

@@ -48,7 +48,16 @@ const CreateTodo = () => {
         <Input.TextArea rows={1} />
       </Form.Item>
 
-      <Form.Item name="detail" label="编辑器">
+      <Form.Item name="deadline" label="终止时间">
+        <DatePicker
+          format="YYYY-MM-DD HH:mm:ss"
+          disabledDate={disabledDate}
+          disabledTime={disabledDateTime}
+          showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
+        />
+      </Form.Item>
+
+      <Form.Item name="detail" label="详情">
         <Editor />
       </Form.Item>
 
@@ -67,15 +76,6 @@ const CreateTodo = () => {
         ]}
       >
         <Select options={tags.map((item) => ({ label: item.name, value: item.id }))} />
-      </Form.Item>
-
-      <Form.Item name="deadline" label="终止时间">
-        <DatePicker
-          format="YYYY-MM-DD HH:mm:ss"
-          disabledDate={disabledDate}
-          disabledTime={disabledDateTime}
-          showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
-        />
       </Form.Item>
 
       <Form.Item>
