@@ -35,14 +35,6 @@ const Home = () => {
     tagId: '',
   });
 
-  const goTag = () => {
-    navigate('/tag');
-  };
-
-  const goCreate = () => {
-    navigate('/create');
-  };
-
   const getAllTodo = () => {
     setS({ loading: true });
     serviceAxios
@@ -214,12 +206,6 @@ const Home = () => {
   return (
     <div>
       <Space style={{ marginBottom: 16 }}>
-        <Button type="link" onClick={goCreate}>
-          创建待办
-        </Button>
-        <Button type="link" onClick={goTag}>
-          标签管理
-        </Button>
         <Select
           placeholder="请选择标签"
           allowClear

@@ -75,16 +75,7 @@ const CreateTodo = () => {
           <Select options={tags.map((item) => ({ label: item.name, value: item.id }))} />
         </Form.Item>
 
-        <Form.Item
-          name="deadline"
-          label="终止时间"
-          rules={[
-            {
-              required: true,
-              message: '请选择终止时间',
-            },
-          ]}
-        >
+        <Form.Item name="deadline" label="终止时间">
           <DatePicker
             format="YYYY-MM-DD HH:mm:ss"
             disabledDate={disabledDate}

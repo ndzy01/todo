@@ -1,12 +1,20 @@
 import { useMount } from 'ahooks';
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Space, Radio } from 'antd';
+import { Space, Radio, Button } from 'antd';
 import type { RadioChangeEvent } from 'antd';
 import { useState } from 'react';
 
 const Layout = () => {
   const navigate = useNavigate();
   const [s, setS] = useState('2');
+
+  const goTag = () => {
+    navigate('/tag');
+  };
+
+  const goCreate = () => {
+    navigate('/create');
+  };
 
   const onChange = (e: RadioChangeEvent) => {
     setS(e.target.value);
@@ -44,6 +52,12 @@ const Layout = () => {
           <Radio value={'1'}>线上</Radio>
           <Radio value={'2'}>日常</Radio>
         </Radio.Group>
+        <Button type="link" onClick={goCreate}>
+          创建待办
+        </Button>
+        <Button type="link" onClick={goTag}>
+          标签管理
+        </Button>
       </Space>
       <Outlet />
     </div>
