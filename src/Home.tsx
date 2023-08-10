@@ -145,12 +145,12 @@ const Home = () => {
                   description={
                     <>
                       <Preview md={item.detail} />
-                      <Space style={{ overflowX: 'scroll', marginTop: 16 }}>
+                      <Space style={{ marginTop: 16 }}>
                         <Tag>标签：{item.tagName}</Tag>
                         <Tag>终止日期：{dayjs(item.deadline).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
                       </Space>
                       <div>
-                        <Space style={{ overflowX: 'scroll', marginTop: 16 }}>
+                        <Space style={{ marginTop: 16 }}>
                           <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                           <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                         </Space>
@@ -191,12 +191,12 @@ const Home = () => {
                   description={
                     <>
                       <Preview md={item.detail} />
-                      <Space style={{ overflowX: 'scroll', marginTop: 16 }}>
+                      <Space style={{ marginTop: 16 }}>
                         <Tag>标签：{item.tagName}</Tag>
                         <Tag>终止日期：{dayjs(item.deadline).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
                       </Space>
                       <div>
-                        <Space style={{ overflowX: 'scroll', marginTop: 16 }}>
+                        <Space style={{ marginTop: 16 }}>
                           <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                           <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
                         </Space>

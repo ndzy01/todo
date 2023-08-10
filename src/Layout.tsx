@@ -26,7 +26,7 @@ const Layout = () => {
 
   return (
     <div style={{ padding: 16 }}>
-      <Space style={{ paddingBottom: 16, overflowX: 'scroll' }}>
+      <Space style={{ paddingBottom: 16, overflow: 'scroll', width: '100%' }}>
         <Button type="link" onClick={goHome}>
           首页
         </Button>
