@@ -7,6 +7,7 @@ import ITag from './Tag';
 import NoMatch from './NoMatch';
 import CreateTodo from './CreateTodo';
 import Layout from './Layout';
+import Register from './Register';
 
 const App = () => {
   return (
@@ -17,6 +18,7 @@ const App = () => {
           <Route path="create" element={<CreateTodo />} />
           <Route path="login" element={<Login />} />
           <Route path="tag" element={<ITag />} />
+          <Route path="register" element={<Register />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>

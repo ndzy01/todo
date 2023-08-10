@@ -8,7 +8,7 @@ import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
 import Editor from './component/Editor';
 import Preview from './component/Preview';
-import { disabledDate, disabledDateTime } from './utils';
+import { disabledDate } from './utils';
 
 const ContainerHeight = 888;
 const Home = () => {
@@ -145,11 +145,16 @@ const Home = () => {
                   description={
                     <>
                       <Preview md={item.detail} />
-                      <Space>
-                        <Tag>{item.tagName}</Tag>
-                        <Tag>{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
-                        <Tag>{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                      <Space style={{ overflowX: 'scroll', marginTop: 16 }}>
+                        <Tag>标签：{item.tagName}</Tag>
+                        <Tag>终止日期：{dayjs(item.deadline).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
                       </Space>
+                      <div>
+                        <Space style={{ overflowX: 'scroll', marginTop: 16 }}>
+                          <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                          <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        </Space>
+                      </div>
                     </>
                   }
                 />
@@ -186,11 +191,16 @@ const Home = () => {
                   description={
                     <>
                       <Preview md={item.detail} />
-                      <Space>
-                        <Tag>{item.tagName}</Tag>
-                        <Tag>{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
-                        <Tag>{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                      <Space style={{ overflowX: 'scroll', marginTop: 16 }}>
+                        <Tag>标签：{item.tagName}</Tag>
+                        <Tag>终止日期：{dayjs(item.deadline).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
                       </Space>
+                      <div>
+                        <Space style={{ overflowX: 'scroll', marginTop: 16 }}>
+                          <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                          <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        </Space>
+                      </div>
                     </>
                   }
                 />
@@ -252,10 +262,8 @@ const Home = () => {
               onChange={(date) => {
                 setS({ todo: { ...s.todo, deadline: date } });
               }}
-              format="YYYY-MM-DD HH:mm:ss"
+              format="YYYY-MM-DD"
               disabledDate={disabledDate}
-              disabledTime={disabledDateTime}
-              showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
             />
           </div>
           <div style={{ marginBottom: 8 }}>

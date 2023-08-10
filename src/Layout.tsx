@@ -16,9 +16,17 @@ const Layout = () => {
     navigate('/');
   };
 
+  const goLogin = () => {
+    navigate('/login');
+  };
+
+  const goRegister = () => {
+    navigate('/register');
+  };
+
   return (
     <div style={{ padding: 16 }}>
-      <Space style={{ paddingBottom: 16 }}>
+      <Space style={{ paddingBottom: 16, overflowX: 'scroll' }}>
         <Button type="link" onClick={goHome}>
           首页
         </Button>
@@ -27,6 +35,12 @@ const Layout = () => {
         </Button>
         <Button type="link" onClick={goTag}>
           标签管理
+        </Button>
+        <Button type="link" onClick={goLogin}>
+          登陆
+        </Button>
+        <Button type="link" onClick={goRegister}>
+          注册
         </Button>
       </Space>
       <Outlet />

@@ -1,12 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount } from 'ahooks';
 import { Button, Input, Form, Select, DatePicker } from 'antd';
-import dayjs from 'dayjs';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import serviceAxios from './http';
 import Editor from './component/Editor';
-import { disabledDate, disabledDateTime } from './utils';
+import { disabledDate } from './utils';
 
 const CreateTodo = () => {
   const navigate = useNavigate();
@@ -49,12 +48,7 @@ const CreateTodo = () => {
       </Form.Item>
 
       <Form.Item name="deadline" label="终止时间">
-        <DatePicker
-          format="YYYY-MM-DD HH:mm:ss"
-          disabledDate={disabledDate}
-          disabledTime={disabledDateTime}
-          showTime={{ defaultValue: dayjs('00:00:00', 'HH:mm:ss') }}
-        />
+        <DatePicker format="YYYY-MM-DD" disabledDate={disabledDate} />
       </Form.Item>
 
       <Form.Item name="detail" label="详情">
