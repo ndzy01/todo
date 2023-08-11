@@ -37,9 +37,11 @@ const Home = () => {
     serviceAxios
       .get('/todos', { params: { tagId: s.tagId } })
       .then((res) => {
-        const { list = [], delList = [] } = res.data;
-
-        setS({ list, delList, loading: false });
+        setS({
+          list: res.data.filter((item: ITodo) => item.isDel === 0),
+          delList: res.data.filter((item: ITodo) => item.isDel === 1),
+          loading: false,
+        });
       })
       .finally(() => {
         setS({ loading: false });
