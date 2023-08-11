@@ -25,6 +25,8 @@ const Login = () => {
       .then((res) => {
         if (res && res.data && res.data.token) {
           localStorage.setItem('token', res.data.token);
+          localStorage.setItem('name', res.data.name);
+
           navigate('/');
         }
       })

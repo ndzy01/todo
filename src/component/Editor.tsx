@@ -11,7 +11,36 @@ const Editor = ({ value, onChange, placeholder = '请输入' }: any) => {
 
   useEffect(() => {
     const vditor = new Vditor(`vditor-${id}`, {
-      toolbar: ['fullscreen', 'headings', 'outline'],
+      toolbar: [
+        'outline',
+        '|',
+        'headings',
+        'bold',
+        'italic',
+        'strike',
+        'quote',
+        'line',
+        'link',
+        'table',
+        '|',
+        'list',
+        'ordered-list',
+        'check',
+        'outdent',
+        'indent',
+        '|',
+        'code',
+        'inline-code',
+        '|',
+        'insert-after',
+        'insert-before',
+        '|',
+        'redo',
+        'undo',
+        'preview',
+        'export',
+        'fullscreen',
+      ],
       input: (v) => {
         onChange(v);
       },

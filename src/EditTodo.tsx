@@ -2,13 +2,15 @@
 import { useMount } from 'ahooks';
 import { Button, Input, Form, Select, DatePicker } from 'antd';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
+import dayjs from 'dayjs';
 import serviceAxios from './http';
 import Editor from './component/Editor';
 import { disabledDate } from './utils';
 
-const CreateTodo = () => {
+const EditTodo = () => {
   const navigate = useNavigate();
+  const { state } = useLocation();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
   const [tags, setTags] = useState<any[]>([]);
@@ -17,13 +19,21 @@ const CreateTodo = () => {
     navigate('/');
   };
 
-  const create = (values: any) => {
+  const edit = (values: any) => {
     setLoading(true);
-    serviceAxios.post('/todos', { ...values }).finally(() => {
-      setLoading(false);
-      form.resetFields();
-      goHome();
-    });
+    serviceAxios
+      .patch(`/todos/${state.id}`, {
+        name: values.name,
+        detail: values.detail,
+        link: values.link,
+        deadline: dayjs(values.deadline).format('YYYY-MM-DD'),
+        tagId: values.tagId,
+      })
+      .finally(() => {
+        setLoading(false);
+        form.resetFields();
+        goHome();
+      });
   };
 
   useMount(() => {
@@ -33,7 +43,19 @@ const CreateTodo = () => {
   });
 
   return (
-    <Form name="create" onFinish={create} scrollToFirstError form={form}>
+    <Form
+      name="edit"
+      initialValues={{
+        name: state.name,
+        deadline: dayjs(state.deadline),
+        detail: state.detail,
+        link: state.link,
+        tagId: state.tagId,
+      }}
+      onFinish={edit}
+      scrollToFirstError
+      form={form}
+    >
       <Form.Item
         name="name"
         label="名称"
@@ -83,11 +105,11 @@ const CreateTodo = () => {
 
       <Form.Item>
         <Button loading={loading} type="primary" htmlType="submit">
-          创建
+          保存
         </Button>
       </Form.Item>
     </Form>
   );
 };
 
-export default CreateTodo;
+export default EditTodo;

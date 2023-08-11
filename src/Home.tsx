@@ -1,14 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount, useSetState, useUpdateEffect } from 'ahooks';
 import type { TabsProps } from 'antd';
-import { Button, Input, List, Modal, Space, Tabs, Tag, Select, DatePicker, message } from 'antd';
+import { Button, List, Space, Tabs, Tag, Select, Popconfirm } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
-import Editor from './component/Editor';
 import Preview from './component/Preview';
-import { disabledDate } from './utils';
 
 const ContainerHeight = 888;
 const Home = () => {
@@ -50,27 +48,6 @@ const Home = () => {
     serviceAxios('/tags').then((res) => {
       setS({ tags: res.data || [] });
     });
-  };
-
-  const edit = () => {
-    if (!s.todo.name) {
-      message.error('名称不能为空');
-      return;
-    }
-
-    setS({ loading: true });
-    serviceAxios
-      .patch(`/todos/${s.todo.id}`, {
-        name: s.todo.name,
-        detail: s.todo.detail,
-        link: s.todo.link,
-        deadline: s.todo.deadline,
-        tagId: s.todo.tagId,
-      })
-      .then(() => {
-        getAllTodo();
-        setS({ isShowEdit: false, todo: { name: '', detail: '', link: '' } });
-      });
   };
 
   const finish = (item: ITodo) => {
@@ -137,7 +114,7 @@ const Home = () => {
                       )}
 
                       <Space style={{ marginLeft: 8 }}>
-                        <Button onClick={() => setS({ isShowEdit: true, todo: item })}> 编辑</Button>
+                        <Button onClick={() => navigate('/edit', { state: { ...item } })}> 编辑</Button>
                         <Button onClick={() => finish(item)}> 完成</Button>
                       </Space>
                     </div>
@@ -147,7 +124,7 @@ const Home = () => {
                       <Preview md={item.detail} />
                       <Space style={{ marginTop: 16 }}>
                         <Tag>标签：{item.tagName}</Tag>
-                        <Tag>终止日期：{dayjs(item.deadline).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
+                        <Tag>终止日期：{dayjs(item.deadline).format('YYYY-MM-DD')}</Tag>
                       </Space>
                       <div>
                         <Space style={{ marginTop: 16 }}>
@@ -184,7 +161,9 @@ const Home = () => {
                       )}
                       <Space>
                         <Button onClick={() => recover(item)}> 恢复</Button>
-                        <Button onClick={() => del(item)}> 删除</Button>
+                        <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
+                          <Button> 删除</Button>
+                        </Popconfirm>
                       </Space>
                     </div>
                   }
@@ -193,7 +172,7 @@ const Home = () => {
                       <Preview md={item.detail} />
                       <Space style={{ marginTop: 16 }}>
                         <Tag>标签：{item.tagName}</Tag>
-                        <Tag>终止日期：{dayjs(item.deadline).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
+                        <Tag>终止日期：{dayjs(item.deadline).format('YYYY-MM-DD')}</Tag>
                       </Space>
                       <div>
                         <Space style={{ marginTop: 16 }}>
@@ -214,18 +193,20 @@ const Home = () => {
 
   return (
     <div>
-      <Space style={{ marginBottom: 16 }}>
+      <div style={{ margin: '8px 0' }}>当前用户：{localStorage.getItem('name') || '--'}</div>
+      <div style={{ display: 'flex', marginBottom: 8 }}>
+        标签：
         <Select
           placeholder="请选择标签"
           allowClear
-          style={{ width: 200 }}
+          style={{ flex: 1 }}
           value={s.tagId}
           onChange={(v) => {
             setS({ tagId: v });
           }}
           options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
         />
-      </Space>
+      </div>
 
       <Tabs
         defaultActiveKey="1"
@@ -235,68 +216,6 @@ const Home = () => {
           setS({ tabKey: activeKey });
         }}
       />
-
-      {s.isShowEdit && (
-        <Modal
-          title="编辑代办"
-          okText="确定"
-          cancelText="取消"
-          open={s.isShowEdit}
-          onOk={edit}
-          okButtonProps={{ loading: s.loading }}
-          onCancel={() => setS({ isShowEdit: false })}
-        >
-          <div style={{ marginBottom: 8 }}>
-            <Input.TextArea
-              rows={3}
-              value={s.todo?.name}
-              onChange={(e: { target: { value: any } }) => {
-                setS({ todo: { ...s.todo, name: e.target.value } });
-              }}
-              placeholder="名称"
-            />
-          </div>
-          <div style={{ marginBottom: 8 }}>
-            <DatePicker
-              value={dayjs(s.todo?.deadline)}
-              onChange={(date) => {
-                setS({ todo: { ...s.todo, deadline: date } });
-              }}
-              format="YYYY-MM-DD"
-              disabledDate={disabledDate}
-            />
-          </div>
-          <div style={{ marginBottom: 8 }}>
-            <Editor
-              placeholder="请输入"
-              value={s.todo?.detail}
-              onChange={(v: string) => {
-                setS({ todo: { ...s.todo, detail: v } });
-              }}
-            />
-          </div>
-          <div>
-            <Input.TextArea
-              rows={3}
-              value={s.todo?.link}
-              onChange={(e: { target: { value: any } }) => {
-                setS({ todo: { ...s.todo, link: e.target.value } });
-              }}
-              placeholder="链接"
-            />
-          </div>
-          <div>
-            <Select
-              style={{ width: 200 }}
-              value={s.todo?.tagId}
-              onChange={(v) => {
-                setS({ todo: { ...s.todo, tagId: v } });
-              }}
-              options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
-            />
-          </div>
-        </Modal>
-      )}
     </div>
   );
 };
