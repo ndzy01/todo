@@ -28,6 +28,7 @@ const Login = () => {
           localStorage.setItem('token', res.data.token);
 
           navigate('/');
+          window.location.reload();
         }
       })
       .finally(() => {
