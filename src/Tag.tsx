@@ -1,17 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount } from 'ahooks';
 import serviceAxios from './http';
-import { useEffect, useRef, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
-import { InputRef, Space, Spin } from 'antd';
-import { Input, Tag } from 'antd';
+import { useState } from 'react';
+import { Button, List, Space, Popconfirm, Input, Spin } from 'antd';
+import VirtualList from 'rc-virtual-list';
 
+const ContainerHeight = 888;
 const ITag: React.FC = () => {
-  const [tags, setTags] = useState<{ id: string; name: string }[]>([]);
+  const [tags, setTags] = useState<{ id: string; name: string; userName: string }[]>([]);
   const [loading, setLoading] = useState(false);
-  const [inputVisible, setInputVisible] = useState(false);
   const [inputValue, setInputValue] = useState('');
-  const inputRef = useRef<InputRef>(null);
 
   const getAllTags = () => {
     setLoading(true);
@@ -29,39 +27,25 @@ const ITag: React.FC = () => {
     getAllTags();
   });
 
-  useEffect(() => {
-    if (inputVisible) {
-      inputRef.current?.focus();
-    }
-  }, [inputVisible]);
-
-  const handleClose = (id: string) => {
+  const del = (id: string) => {
     setLoading(true);
     serviceAxios.delete(`/tags/${id}`).then(() => {
       getAllTags();
     });
   };
 
-  const showInput = () => {
-    setInputVisible(true);
-  };
-
   const handleInputChange = (e: any) => {
     setInputValue(e.target.value);
   };
 
-  const handleInputConfirm = () => {
+  const handleCreate = () => {
     if (!inputValue) {
-      setInputVisible(false);
-      setInputValue('');
-
       return;
     }
 
     setLoading(true);
     serviceAxios.post('/tags', { name: inputValue }).then(() => {
       getAllTags();
-      setInputVisible(false);
       setInputValue('');
     });
   };
@@ -73,36 +57,37 @@ const ITag: React.FC = () => {
       ) : (
         <>
           <Space>
-            {tags.map((item) => (
-              <Tag
-                key={item.id}
-                closable
-                onClose={(e) => {
-                  e.preventDefault();
-                  handleClose(item.id);
-                }}
-              >
-                {item.name}
-              </Tag>
-            ))}
+            <Input.TextArea size="small" style={{ width: 300 }} value={inputValue} onChange={handleInputChange} />
+            <Button type="primary" onClick={handleCreate}>
+              添加
+            </Button>
           </Space>
-          <div style={{ padding: 16 }}>
-            {inputVisible ? (
-              <Input.TextArea
-                ref={inputRef}
-                size="small"
-                style={{ width: 300 }}
-                value={inputValue}
-                onChange={handleInputChange}
-                onBlur={handleInputConfirm}
-                onPressEnter={handleInputConfirm}
-              />
-            ) : (
-              <Tag onClick={showInput}>
-                <PlusOutlined /> 添加标签
-              </Tag>
-            )}
-          </div>
+
+          <List loading={loading}>
+            <VirtualList data={tags} height={ContainerHeight} itemHeight={47} itemKey="id">
+              {(item) => (
+                <List.Item key={item.id}>
+                  <List.Item.Meta
+                    title={
+                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                        {item.name}
+                        <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item.id)}>
+                          <Button> 删除</Button>
+                        </Popconfirm>
+                      </div>
+                    }
+                    description={
+                      <div>
+                        <Space style={{ marginTop: 16 }}>
+                          <div>创建人：{item.userName || '--'}</div>
+                        </Space>
+                      </div>
+                    }
+                  />
+                </List.Item>
+              )}
+            </VirtualList>
+          </List>
         </>
       )}
     </div>

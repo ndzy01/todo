@@ -1,6 +1,5 @@
 import { useMount, useSetState, useUpdateEffect } from 'ahooks';
-import type { TabsProps } from 'antd';
-import { Button, List, Space, Tabs, Tag, Select, Popconfirm } from 'antd';
+import { Button, List, Space, Tag, Select, Popconfirm } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
@@ -12,7 +11,6 @@ const Home = () => {
   const navigate = useNavigate();
   const [s, setS] = useSetState<{
     list: ITodo[];
-    delList: ITodo[];
     isShowEdit: boolean;
     isShowCreate: boolean;
     todo: ITodoRecord;
@@ -22,7 +20,6 @@ const Home = () => {
     tagId?: string;
   }>({
     list: [],
-    delList: [],
     isShowEdit: false,
     isShowCreate: false,
     todo: { name: '', detail: '', link: '' },
@@ -37,8 +34,7 @@ const Home = () => {
       .get('/todos', { params: { tagId: s.tagId } })
       .then((res) => {
         setS({
-          list: res.data.filter((item: ITodo) => item.isDel === 0),
-          delList: res.data.filter((item: ITodo) => item.isDel === 1),
+          list: res.data,
           loading: false,
         });
       })
@@ -94,106 +90,6 @@ const Home = () => {
     getAllTodo();
   }, [s.tagId]);
 
-  const items: TabsProps['items'] = [
-    {
-      key: '1',
-      label: '待办',
-      children: (
-        <List loading={s.loading}>
-          <VirtualList data={s.list} height={ContainerHeight} itemHeight={47} itemKey="id">
-            {(item) => (
-              <List.Item key={item.id}>
-                <List.Item.Meta
-                  title={
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      {item.link ? (
-                        <a target="_blank" href={item.link}>
-                          {item.name}
-                        </a>
-                      ) : (
-                        item.name
-                      )}
-
-                      <Space style={{ marginLeft: 8 }}>
-                        <Button onClick={() => navigate('/edit', { state: { ...item } })}> 编辑</Button>
-                        <Button onClick={() => finish(item)}> 完成</Button>
-                      </Space>
-                    </div>
-                  }
-                  description={
-                    <>
-                      <Preview md={item.detail} />
-                      <Space style={{ marginTop: 16 }}>
-                        <div>归属于：{item.userName}</div>
-                        <Tag>标签：{item.tagName}</Tag>
-                        <Tag>终止日期：{dayjs(item.deadline).format('YYYY-MM-DD')}</Tag>
-                      </Space>
-                      <div>
-                        <Space style={{ marginTop: 16 }}>
-                          <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
-                          <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
-                        </Space>
-                      </div>
-                    </>
-                  }
-                />
-              </List.Item>
-            )}
-          </VirtualList>
-        </List>
-      ),
-    },
-    {
-      key: '2',
-      label: '已完成',
-      children: (
-        <List loading={s.loading}>
-          <VirtualList data={s.delList} height={ContainerHeight} itemHeight={47} itemKey="id">
-            {(item) => (
-              <List.Item key={item.id}>
-                <List.Item.Meta
-                  title={
-                    <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                      {item.link ? (
-                        <a target="_blank" href={item.link}>
-                          {item.name}
-                        </a>
-                      ) : (
-                        item.name
-                      )}
-                      <Space>
-                        <Button onClick={() => recover(item)}> 恢复</Button>
-                        <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
-                          <Button> 删除</Button>
-                        </Popconfirm>
-                      </Space>
-                    </div>
-                  }
-                  description={
-                    <>
-                      <Preview md={item.detail} />
-                      <Space style={{ marginTop: 16 }}>
-                        <div>归属于：{item.userName}</div>
-                        <Tag>标签：{item.tagName}</Tag>
-                        <Tag>终止日期：{dayjs(item.deadline).format('YYYY-MM-DD')}</Tag>
-                      </Space>
-                      <div>
-                        <Space style={{ marginTop: 16 }}>
-                          <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
-                          <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
-                        </Space>
-                      </div>
-                    </>
-                  }
-                />
-              </List.Item>
-            )}
-          </VirtualList>
-        </List>
-      ),
-    },
-  ];
-
   return (
     <div>
       <div style={{ display: 'flex', marginBottom: 8 }}>
@@ -210,14 +106,61 @@ const Home = () => {
         />
       </div>
 
-      <Tabs
-        defaultActiveKey="1"
-        activeKey={s.tabKey}
-        items={items}
-        onChange={(activeKey) => {
-          setS({ tabKey: activeKey });
-        }}
-      />
+      <List loading={s.loading}>
+        <VirtualList data={s.list} height={ContainerHeight} itemHeight={47} itemKey="id">
+          {(item) => (
+            <List.Item key={item.id}>
+              <List.Item.Meta
+                title={
+                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                    {item.link ? (
+                      <Space>
+                        <a target="_blank" href={item.link}>
+                          {item.name}
+                        </a>
+                        <Tag color={item.isDel === 1 ? 'green' : 'red'}>{item.isDel === 1 ? '完成' : '处理中'}</Tag>
+                      </Space>
+                    ) : (
+                      <Space>
+                        {item.name}
+                        <Tag color={item.isDel === 1 ? 'green' : 'red'}>{item.isDel === 1 ? '完成' : '处理中'}</Tag>
+                      </Space>
+                    )}
+
+                    <Space style={{ marginLeft: 8 }}>
+                      <Button onClick={() => navigate('/edit', { state: { ...item } })}> 编辑</Button>
+                      {item.isDel === 0 && <Button onClick={() => finish(item)}> 完成</Button>}
+                      {item.isDel === 1 && <Button onClick={() => recover(item)}> 恢复</Button>}
+                      {item.isDel === 1 && (
+                        <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
+                          <Button> 删除</Button>
+                        </Popconfirm>
+                      )}
+                    </Space>
+                  </div>
+                }
+                description={
+                  <>
+                    <Preview md={item.detail} />
+                    <Space style={{ marginTop: 16 }}>
+                      <div>创建人：{item.userName || '--'}</div>
+                      <Tag>标签：{item.tagName || '--'}</Tag>
+
+                      <Tag>终止日期：{dayjs(item.deadline).format('YYYY-MM-DD')}</Tag>
+                    </Space>
+                    <div>
+                      <Space style={{ marginTop: 16 }}>
+                        <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                        <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD HH:mm:ss')}</Tag>
+                      </Space>
+                    </div>
+                  </>
+                }
+              />
+            </List.Item>
+          )}
+        </VirtualList>
+      </List>
     </div>
   );
 };
