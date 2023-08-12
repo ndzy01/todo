@@ -48,7 +48,7 @@ const Home = () => {
       });
 
     serviceAxios('/tags').then((res) => {
-      setS({ tags: res.data || [] });
+      setS({ tags: res.data });
     });
   };
 
@@ -125,6 +125,7 @@ const Home = () => {
                     <>
                       <Preview md={item.detail} />
                       <Space style={{ marginTop: 16 }}>
+                        <div>归属于：{item.userName}</div>
                         <Tag>标签：{item.tagName}</Tag>
                         <Tag>终止日期：{dayjs(item.deadline).format('YYYY-MM-DD')}</Tag>
                       </Space>
@@ -173,6 +174,7 @@ const Home = () => {
                     <>
                       <Preview md={item.detail} />
                       <Space style={{ marginTop: 16 }}>
+                        <div>归属于：{item.userName}</div>
                         <Tag>标签：{item.tagName}</Tag>
                         <Tag>终止日期：{dayjs(item.deadline).format('YYYY-MM-DD')}</Tag>
                       </Space>
@@ -195,7 +197,6 @@ const Home = () => {
 
   return (
     <div>
-      <div style={{ margin: '8px 0' }}>当前用户：{localStorage.getItem('name') || '--'}</div>
       <div style={{ display: 'flex', marginBottom: 8 }}>
         标签：
         <Select

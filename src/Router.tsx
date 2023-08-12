@@ -9,6 +9,7 @@ import CreateTodo from './CreateTodo';
 import EditTodo from './EditTodo';
 import Layout from './Layout';
 import Register from './Register';
+import UserList from './UserList';
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
           <Route path="tag" element={<ITag />} />
           <Route path="register" element={<Register />} />
           <Route path="edit" element={<EditTodo />} />
+          <Route path="users" element={<UserList />} />
           <Route path="*" element={<NoMatch />} />
         </Route>
       </Routes>

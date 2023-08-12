@@ -18,6 +18,7 @@ const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 const Register = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
   const onFinish = (values: any) => {
     setLoading(true);
     serviceAxios

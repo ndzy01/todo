@@ -37,9 +37,14 @@ const EditTodo = () => {
   };
 
   useMount(() => {
-    serviceAxios('/tags').then((res) => {
-      setTags(res.data || []);
-    });
+    setLoading(true);
+    serviceAxios('/tags')
+      .then((res) => {
+        setTags(res.data);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   });
 
   return (

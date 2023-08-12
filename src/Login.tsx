@@ -18,6 +18,7 @@ const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+
   const login = (values: any) => {
     setLoading(true);
     serviceAxios
@@ -25,7 +26,6 @@ const Login = () => {
       .then((res) => {
         if (res && res.data && res.data.token) {
           localStorage.setItem('token', res.data.token);
-          localStorage.setItem('name', res.data.name);
 
           navigate('/');
         }
@@ -37,6 +37,10 @@ const Login = () => {
 
   return (
     <Form {...formItemLayout} name="login" onFinish={login} style={{ maxWidth: 366 }} scrollToFirstError>
+      <Form.Item name="mobile" label="手机号" rules={[{ required: true, message: '请输入你的手机号!' }]}>
+        <Input style={{ width: '100%' }} />
+      </Form.Item>
+
       <Form.Item
         name="password"
         label="密码"
@@ -51,9 +55,6 @@ const Login = () => {
         <Input.Password />
       </Form.Item>
 
-      <Form.Item name="mobile" label="手机号" rules={[{ required: true, message: '请输入你的手机号!' }]}>
-        <Input style={{ width: '100%' }} />
-      </Form.Item>
       <Form.Item {...buttonItemLayout}>
         <Button loading={loading} type="primary" htmlType="submit">
           登录
