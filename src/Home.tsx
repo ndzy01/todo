@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount, useSetState, useUpdateEffect } from 'ahooks';
 import type { TabsProps } from 'antd';
 import { Button, List, Space, Tabs, Tag, Select, Popconfirm } from 'antd';
