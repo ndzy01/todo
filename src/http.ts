@@ -9,6 +9,7 @@ antMsg.config({
 
 const serviceAxios = axios.create({
   baseURL: 'https://ndzy-server.vercel.app', // 基础请求地址
+  // baseURL: 'http://localhost:3000', // 基础请求地址
   timeout: 10000, // 请求超时设置
   withCredentials: false, // 跨域请求是否需要携带 cookie
 });
@@ -61,10 +62,6 @@ serviceAxios.interceptors.response.use(
         case 401:
           message = '您未登录，或者登录已经超时，请先登录！';
           localStorage.setItem('token', '');
-
-          if (window.location.pathname === '/') {
-            window.location.reload();
-          }
 
           antMsg.error(message);
           break;

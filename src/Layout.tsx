@@ -13,15 +13,9 @@ const Layout = () => {
   };
 
   useMount(() => {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      navigate('/login');
-    } else {
-      serviceAxios.get('/users').then((res) => {
-        setUser(res.data);
-      });
-    }
+    serviceAxios.get('/users').then((res) => {
+      setUser(res.data);
+    });
   });
 
   return (
@@ -47,7 +41,6 @@ const Layout = () => {
             用户管理
           </Button>
         )}
-        {user && user.name && <div>当前用户：{user.name}</div>}
       </Space>
       <Outlet />
     </div>

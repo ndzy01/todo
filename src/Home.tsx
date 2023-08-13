@@ -71,13 +71,7 @@ const Home = () => {
   };
 
   useMount(() => {
-    const token = localStorage.getItem('token');
-
-    if (!token) {
-      navigate('/login');
-    } else {
-      getAllTodo();
-    }
+    getAllTodo();
   });
 
   useUpdateEffect(() => {
