@@ -7,6 +7,11 @@ interface ITodo {
   link: string;
   tagId: string;
   deadline: string;
+  isDel: number;
+  userName: string;
+  tagName: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface ITodoRecord {

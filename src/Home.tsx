@@ -11,18 +11,12 @@ const Home = () => {
   const navigate = useNavigate();
   const [s, setS] = useSetState<{
     list: ITodo[];
-    isShowEdit: boolean;
-    isShowCreate: boolean;
-    todo: ITodoRecord;
     loading: boolean;
     tabKey: string;
     tags: TodoTag[];
     tagId?: string;
   }>({
     list: [],
-    isShowEdit: false,
-    isShowCreate: false,
-    todo: { name: '', detail: '', link: '' },
     loading: false,
     tabKey: '1',
     tags: [],

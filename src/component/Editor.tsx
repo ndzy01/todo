@@ -9,9 +9,9 @@ const Editor = ({
   onChange,
   placeholder = '请输入',
 }: {
-  value: string;
-  onChange: (v: string) => void;
-  placeholder: string;
+  value?: string;
+  onChange?: (v: string) => void;
+  placeholder?: string;
 }) => {
   const [, setVd] = useState<Vditor>();
   const id = generateUUID();
@@ -49,7 +49,7 @@ const Editor = ({
         'fullscreen',
       ],
       input: (v) => {
-        onChange(v);
+        onChange && onChange(v);
       },
       minHeight: 180,
       placeholder,
