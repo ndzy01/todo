@@ -12,6 +12,12 @@ const Layout = () => {
     navigate(url);
   };
 
+  const signOut = () => {
+    localStorage.setItem('token', '');
+    goPage('/');
+    window.location.reload();
+  };
+
   useMount(() => {
     serviceAxios.get('/users').then((res) => {
       setUser(res.data);
@@ -35,6 +41,9 @@ const Layout = () => {
         </Button>
         <Button type="link" onClick={() => goPage('/register')}>
           注册
+        </Button>
+        <Button type="link" onClick={signOut}>
+          登出
         </Button>
         {user && user.role === '0' && (
           <Button type="link" onClick={() => goPage('/users')}>
