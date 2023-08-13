@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import serviceAxios from './http';
 import { useMount } from 'ahooks';
 import { Button, List, Space, Tag, Popconfirm } from 'antd';
@@ -8,7 +7,7 @@ import { useState } from 'react';
 
 const ContainerHeight = 888;
 const UserList = () => {
-  const [s, setS] = useState<any>([]);
+  const [s, setS] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
 
   const getAll = () => {
@@ -27,7 +26,7 @@ const UserList = () => {
     getAll();
   });
 
-  const del = (item: any) => {
+  const del = (item: User) => {
     setLoading(true);
     serviceAxios.delete(`/users/${item.id}`).then(() => {
       getAll();

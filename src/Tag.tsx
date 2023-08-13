@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount } from 'ahooks';
 import serviceAxios from './http';
 import { useState } from 'react';
@@ -34,10 +33,6 @@ const ITag: React.FC = () => {
     });
   };
 
-  const handleInputChange = (e: any) => {
-    setInputValue(e.target.value);
-  };
-
   const handleCreate = () => {
     if (!inputValue) {
       return;
@@ -57,7 +52,12 @@ const ITag: React.FC = () => {
       ) : (
         <>
           <Space>
-            <Input.TextArea size="small" style={{ width: 300 }} value={inputValue} onChange={handleInputChange} />
+            <Input.TextArea
+              size="small"
+              style={{ width: 300 }}
+              value={inputValue}
+              onChange={(e) => setInputValue(e.target.value)}
+            />
             <Button type="primary" onClick={handleCreate}>
               添加
             </Button>

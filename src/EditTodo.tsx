@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMount } from 'ahooks';
 import { Button, Input, Form, Select, DatePicker } from 'antd';
 import { useState } from 'react';
@@ -13,13 +12,13 @@ const EditTodo = () => {
   const { state } = useLocation();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [tags, setTags] = useState<any[]>([]);
+  const [tags, setTags] = useState<TodoTag[]>([]);
 
   const goHome = () => {
     navigate('/');
   };
 
-  const edit = (values: any) => {
+  const edit = (values: ITodoRecord) => {
     setLoading(true);
     serviceAxios
       .patch(`/todos/${state.id}`, {
@@ -105,7 +104,7 @@ const EditTodo = () => {
           },
         ]}
       >
-        <Select options={tags.map((item) => ({ label: item.name, value: item.id }))} />
+        <Select options={tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))} />
       </Form.Item>
 
       <Form.Item>

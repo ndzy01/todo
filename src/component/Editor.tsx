@@ -1,11 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable react-hooks/exhaustive-deps */
 import { useState, useEffect } from 'react';
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 import { generateUUID } from './utils';
 
-const Editor = ({ value, onChange, placeholder = '请输入' }: any) => {
+const Editor = ({
+  value,
+  onChange,
+  placeholder = '请输入',
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder: string;
+}) => {
   const [, setVd] = useState<Vditor>();
   const id = generateUUID();
 

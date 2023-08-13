@@ -1,5 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import axios from 'axios';
+import axios, { AxiosRequestHeaders } from 'axios';
 import { message as antMsg } from 'antd';
 
 antMsg.config({
@@ -16,11 +15,11 @@ const serviceAxios = axios.create({
 
 // 创建请求拦截
 serviceAxios.interceptors.request.use(
-  (config: any) => {
+  (config) => {
     const token = localStorage.getItem('token');
 
     if (token) {
-      config.headers = { Authorization: 'Basic' + ' ' + token };
+      config.headers = { Authorization: 'Basic' + ' ' + token } as AxiosRequestHeaders;
     }
 
     return config;

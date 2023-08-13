@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 /// <reference types="vite/client" />
 
 interface ITodo {
@@ -6,12 +5,29 @@ interface ITodo {
   name: string;
   detail: string;
   link: string;
-  [k: string]: any;
+  tagId: string;
+  deadline: string;
 }
 
 interface ITodoRecord {
   name: string;
   detail: string;
   link: string;
-  [k: string]: any;
+  tagId: string;
+  deadline: string;
+}
+
+interface TodoTag {
+  id: string;
+  name: string;
+  userName: string;
+}
+
+interface User {
+  id: string;
+  nickname: string;
+  name: string;
+  role: string;
+  createdAt: string;
+  updatedAt: string;
 }

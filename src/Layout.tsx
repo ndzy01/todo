@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Space, Button } from 'antd';
 import { useMount } from 'ahooks';
@@ -7,7 +6,7 @@ import { useState } from 'react';
 
 const Layout = () => {
   const navigate = useNavigate();
-  const [user, setUser] = useState<any>();
+  const [user, setUser] = useState<User>();
 
   const goPage = (url: string) => {
     navigate(url);

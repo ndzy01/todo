@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Button, Form, Input } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -19,7 +18,7 @@ const Login = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
 
-  const login = (values: any) => {
+  const login = (values: { mobile: string; password: string }) => {
     setLoading(true);
     serviceAxios
       .post('/users/login', { ...values })

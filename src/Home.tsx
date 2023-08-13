@@ -16,7 +16,7 @@ const Home = () => {
     todo: ITodoRecord;
     loading: boolean;
     tabKey: string;
-    tags: { id: string; name: string }[];
+    tags: TodoTag[];
     tagId?: string;
   }>({
     list: [],
@@ -102,7 +102,7 @@ const Home = () => {
           onChange={(v) => {
             setS({ tagId: v });
           }}
-          options={s.tags.map((item) => ({ label: item.name, value: item.id }))}
+          options={s.tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))}
         />
       </div>
 
@@ -128,7 +128,9 @@ const Home = () => {
                     )}
 
                     <Space style={{ marginLeft: 8 }}>
-                      <Button onClick={() => navigate('/edit', { state: { ...item } })}> 编辑</Button>
+                      {item.isDel === 0 && (
+                        <Button onClick={() => navigate('/edit', { state: { ...item } })}> 编辑</Button>
+                      )}
                       {item.isDel === 0 && <Button onClick={() => finish(item)}> 完成</Button>}
                       {item.isDel === 1 && <Button onClick={() => recover(item)}> 恢复</Button>}
                       {item.isDel === 1 && (
