@@ -45,6 +45,11 @@ serviceAxios.interceptors.response.use(
       }
     }
 
+    if (res.data.status === 2) {
+      localStorage.setItem('token', '');
+      antMsg.success(res.data.msg);
+    }
+
     return data;
   },
   (error) => {
@@ -61,8 +66,6 @@ serviceAxios.interceptors.response.use(
           break;
         case 401:
           message = '您未登录，或者登录已经超时，请先登录！';
-          localStorage.setItem('token', '');
-
           antMsg.error(message);
           break;
         case 403:
