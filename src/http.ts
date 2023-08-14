@@ -40,9 +40,7 @@ serviceAxios.interceptors.response.use(
     }
 
     if (res.data.status === 0) {
-      if (res.data.msg !== '查询成功') {
-        antMsg.success(res.data.msg);
-      }
+      antMsg.success(res.data.msg);
     }
 
     if (res.data.status === 2) {
