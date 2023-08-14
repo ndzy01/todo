@@ -1,5 +1,5 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Space, Button } from 'antd';
+import { Space, Button, Alert } from 'antd';
 import { useMount } from 'ahooks';
 import serviceAxios from './http';
 import { useState } from 'react';
@@ -25,7 +25,8 @@ const Layout = () => {
   });
 
   return (
-    <div style={{ padding: 16 }}>
+    <div>
+      <Alert banner closable message="无需登录即可体验,快来尝试吧" />
       <Space style={{ paddingBottom: 16, width: '100%', flexWrap: 'wrap' }}>
         <Button type="link" onClick={() => goPage('/')}>
           首页
@@ -51,7 +52,10 @@ const Layout = () => {
           </Button>
         )}
       </Space>
-      <Outlet />
+
+      <div style={{ padding: 16 }}>
+        <Outlet />
+      </div>
     </div>
   );
 };
