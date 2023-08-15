@@ -51,7 +51,7 @@ const ITag: React.FC = () => {
         <Spin />
       ) : (
         <>
-          <Space>
+          <Space style={{ marginBottom: 16 }}>
             <Input.TextArea
               size="small"
               style={{ width: 300 }}
