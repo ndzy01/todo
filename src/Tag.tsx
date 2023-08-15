@@ -3,8 +3,8 @@ import serviceAxios from './http';
 import { useState } from 'react';
 import { Button, List, Space, Popconfirm, Input, Spin } from 'antd';
 import VirtualList from 'rc-virtual-list';
+import { ContainerHeight } from './const';
 
-const ContainerHeight = 888;
 const ITag: React.FC = () => {
   const [tags, setTags] = useState<{ id: string; name: string; userName: string }[]>([]);
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,7 @@ const ITag: React.FC = () => {
           </Space>
 
           <List loading={loading}>
-            <VirtualList data={tags} height={ContainerHeight} itemHeight={47} itemKey="id">
+            <VirtualList data={tags} height={ContainerHeight} itemKey="id">
               {(item) => (
                 <List.Item key={item.id}>
                   <List.Item.Meta

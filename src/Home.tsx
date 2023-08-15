@@ -5,8 +5,8 @@ import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
 import serviceAxios from './http';
 import Preview from './component/Preview';
+import { ContainerHeight } from './const';
 
-const ContainerHeight = 888;
 const Home = () => {
   const navigate = useNavigate();
   const [s, setS] = useSetState<{
@@ -95,7 +95,7 @@ const Home = () => {
       </div>
 
       <List loading={s.loading}>
-        <VirtualList data={s.list} height={ContainerHeight} itemHeight={47} itemKey="id">
+        <VirtualList data={s.list} height={ContainerHeight} itemKey="id">
           {(item) => (
             <List.Item key={item.id}>
               <List.Item.Meta

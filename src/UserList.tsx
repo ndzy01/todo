@@ -4,8 +4,8 @@ import { Button, List, Space, Tag, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
 import { useState } from 'react';
+import { ContainerHeight } from './const';
 
-const ContainerHeight = 888;
 const UserList = () => {
   const [s, setS] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
@@ -35,7 +35,7 @@ const UserList = () => {
 
   return (
     <List loading={loading}>
-      <VirtualList data={s} height={ContainerHeight} itemHeight={47} itemKey="id">
+      <VirtualList data={s} height={ContainerHeight} itemKey="id">
         {(item) => (
           <List.Item key={item.id}>
             <List.Item.Meta
