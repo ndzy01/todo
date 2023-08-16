@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom';
 import { Space, Button, Alert } from 'antd';
-import { useMount } from 'ahooks';
+import { useMount, useInterval } from 'ahooks';
 import serviceAxios from './http';
 import { useState } from 'react';
 
@@ -23,6 +23,15 @@ const Layout = () => {
       setUser(res.data);
     });
   });
+
+  useInterval(
+    () => {
+      serviceAxios.get('/users').then((res) => {
+        setUser(res.data);
+      });
+    },
+    1000 * 60 * 30,
+  );
 
   return (
     <div>
