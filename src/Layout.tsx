@@ -51,6 +51,7 @@ const Layout = () => {
             用户管理
           </Button>
         )}
+        {user && <div style={{ color: 'skyblue' }}>{`当前登录用户：${user.name}`}</div>}
       </Space>
 
       <div style={{ padding: 16 }}>
