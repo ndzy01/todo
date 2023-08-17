@@ -40,7 +40,7 @@ const UserList = () => {
           <List.Item key={item.id}>
             <List.Item.Meta
               title={
-                <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                <div className="between">
                   用户名：{item.nickname}
                   <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
                     <Button> 删除</Button>
@@ -48,12 +48,10 @@ const UserList = () => {
                 </div>
               }
               description={
-                <div>
-                  <Space style={{ marginTop: 16 }}>
-                    <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
-                    <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
-                  </Space>
-                </div>
+                <Space className="todo-home-tags">
+                  <Tag>创建日期：{dayjs(item.createdAt).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
+                  <Tag>更新日期：{dayjs(item.updatedAt).subtract(8, 'h').format('YYYY-MM-DD')}</Tag>
+                </Space>
               }
             />
           </List.Item>

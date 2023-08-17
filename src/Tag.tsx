@@ -51,17 +51,12 @@ const ITag: React.FC = () => {
         <Spin />
       ) : (
         <>
-          <Space style={{ marginBottom: 16 }}>
-            <Input.TextArea
-              size="small"
-              style={{ width: 300 }}
-              value={inputValue}
-              onChange={(e) => setInputValue(e.target.value)}
-            />
+          <Space.Compact className="w-100">
+            <Input placeholder="请输入" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
             <Button type="primary" onClick={handleCreate}>
               添加
             </Button>
-          </Space>
+          </Space.Compact>
 
           <List loading={loading}>
             <VirtualList data={tags} height={ContainerHeight} itemKey="id">
@@ -69,7 +64,7 @@ const ITag: React.FC = () => {
                 <List.Item key={item.id}>
                   <List.Item.Meta
                     title={
-                      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                      <div className="between">
                         {item.name}
                         <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item.id)}>
                           <Button> 删除</Button>
@@ -77,11 +72,9 @@ const ITag: React.FC = () => {
                       </div>
                     }
                     description={
-                      <div>
-                        <Space style={{ marginTop: 16 }}>
-                          <div>创建人：{item.userName || '--'}</div>
-                        </Space>
-                      </div>
+                      <Space className="mt-16">
+                        <div>创建人：{item.userName || '--'}</div>
+                      </Space>
                     }
                   />
                 </List.Item>

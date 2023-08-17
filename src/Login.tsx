@@ -36,9 +36,9 @@ const Login = () => {
   };
 
   return (
-    <Form {...formItemLayout} name="login" onFinish={login} style={{ maxWidth: 366 }} scrollToFirstError>
+    <Form {...formItemLayout} name="login" onFinish={login} scrollToFirstError>
       <Form.Item name="mobile" label="手机号" rules={[{ required: true, message: '请输入你的手机号!' }]}>
-        <Input style={{ width: '100%' }} />
+        <Input className="w-100" />
       </Form.Item>
 
       <Form.Item

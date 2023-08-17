@@ -83,7 +83,7 @@ const EditTodo = () => {
           },
         ]}
       >
-        <DatePicker style={{ width: '100%' }} format="YYYY-MM-DD" disabledDate={disabledDate} />
+        <DatePicker className="w-100" format="YYYY-MM-DD" disabledDate={disabledDate} />
       </Form.Item>
 
       <Form.Item name="detail" label="详情">

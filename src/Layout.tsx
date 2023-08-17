@@ -1,13 +1,15 @@
 import { Outlet, useNavigate } from 'react-router-dom';
-import { Space, Button, Alert, Layout as AntLayout } from 'antd';
+import { Layout as AntLayout, Menu } from 'antd';
 import { useMount, useInterval } from 'ahooks';
-import serviceAxios from './http';
+import type { MenuProps } from 'antd';
 import { useState } from 'react';
+import serviceAxios from './http';
 
 const { Header, Content } = AntLayout;
 const Layout = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState<User>();
+  const [current, setCurrent] = useState('/');
 
   const goPage = (url: string) => {
     navigate(url);
@@ -17,6 +19,15 @@ const Layout = () => {
     localStorage.setItem('token', '');
     goPage('/');
     window.location.reload();
+  };
+
+  const onClick: MenuProps['onClick'] = (e) => {
+    if (e.key === '/signOut') {
+      signOut();
+    } else {
+      setCurrent(e.key);
+      goPage(e.key);
+    }
   };
 
   useMount(() => {
@@ -34,53 +45,46 @@ const Layout = () => {
     1000 * 60 * 30,
   );
 
+  const items: MenuProps['items'] = [
+    {
+      label: '首页',
+      key: '/',
+    },
+    {
+      label: '创建待办',
+      key: '/create',
+    },
+    {
+      label: '标签管理',
+      key: '/tag',
+    },
+    {
+      label: '登陆',
+      key: '/login',
+    },
+    {
+      label: '注册',
+      key: '/register',
+    },
+    {
+      label: '登出',
+      key: '/signOut',
+    },
+    ...(user && user.role === '0' ? [{ label: '用户管理', key: '/users' }] : []),
+    {
+      label: user && <div className="sky-blue">{user.name}</div>,
+      key: '',
+      disabled: true,
+    },
+  ];
+
   return (
     <AntLayout className="layout">
-      <Header
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          position: 'sticky',
-          top: 0,
-          zIndex: 1,
-          width: '100%',
-          height: 'auto',
-          background: '#ffffff',
-          boxShadow:
-            '0 1px 2px 0 rgba(0, 0, 0, 0.03), 0 1px 6px -1px rgba(0, 0, 0, 0.02), 0 2px 4px 0 rgba(0, 0, 0, 0.02)',
-        }}
-      >
-        <Space style={{ width: '100%', flexWrap: 'wrap' }}>
-          {user && <div style={{ color: 'skyblue' }}>{user.name}</div>}
-          <Button type="link" onClick={() => goPage('/')}>
-            首页
-          </Button>
-          <Button type="link" onClick={() => goPage('/create')}>
-            创建待办
-          </Button>
-          <Button type="link" onClick={() => goPage('/tag')}>
-            标签管理
-          </Button>
-          <Button type="link" onClick={() => goPage('/login')}>
-            登陆
-          </Button>
-          <Button type="link" onClick={() => goPage('/register')}>
-            注册
-          </Button>
-          <Button type="link" onClick={signOut}>
-            登出
-          </Button>
-          {user && user.role === '0' && (
-            <Button type="link" onClick={() => goPage('/users')}>
-              用户管理
-            </Button>
-          )}
-        </Space>
+      <Header className="todo-header">
+        <Menu className="todo-menu" onClick={onClick} selectedKeys={[current]} mode="horizontal" items={items} />
       </Header>
       <Content>
-        <Alert banner closable message="无需登录即可体验,快来尝试吧" />
-        <div className="layout-content" style={{ padding: 26 }}>
+        <div className="layout-content p-24">
           <Outlet />
         </div>
       </Content>

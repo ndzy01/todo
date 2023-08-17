@@ -45,7 +45,8 @@ serviceAxios.interceptors.response.use(
 
     if (res.data.status === 2) {
       localStorage.setItem('token', '');
-      antMsg.success(res.data.msg);
+
+      antMsg.warning(res.data.msg);
     }
 
     return data;

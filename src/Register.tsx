@@ -33,7 +33,7 @@ const Register = () => {
   };
 
   return (
-    <Form {...formItemLayout} name="register" onFinish={onFinish} style={{ maxWidth: 366 }} scrollToFirstError>
+    <Form {...formItemLayout} name="register" onFinish={onFinish} scrollToFirstError>
       <Form.Item
         name="nickname"
         label="昵称"
@@ -43,7 +43,7 @@ const Register = () => {
       </Form.Item>
 
       <Form.Item name="mobile" label="手机号" rules={[{ required: true, message: '请输入你的手机号!' }]}>
-        <Input style={{ width: '100%' }} />
+        <Input className="w-100" />
       </Form.Item>
 
       <Form.Item
