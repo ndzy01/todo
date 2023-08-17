@@ -1,6 +1,6 @@
 body {
   margin: 0;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .w-100 {
@@ -65,5 +65,9 @@ body {
 @media screen and (max-width: 800px) {
   .todo-menu {
     width: 399px;
+  }
+
+  .layout-content {
+    overflow: scroll;
   }
 }
