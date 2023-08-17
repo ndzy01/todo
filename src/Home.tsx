@@ -45,9 +45,9 @@ const Home = () => {
         setS({ loading: false });
       });
 
-    serviceAxios('/tags').then((res) => {
-      setS({ tags: res.data });
-    });
+    // serviceAxios('/tags').then((res) => {
+    //   setS({ tags: res.data });
+    // });
   };
 
   const finish = (item: ITodo) => {
