@@ -1,4 +1,4 @@
-import { useMount, useSetState } from 'ahooks';
+import { useMount, useSetState, configResponsive, useResponsive } from 'ahooks';
 import {
   Button,
   List,
@@ -16,7 +16,14 @@ import serviceAxios from './http';
 import Preview from './component/Preview';
 import { ContainerHeight } from './const';
 
+configResponsive({
+  small: 0,
+  middle: 800,
+  large: 1200,
+});
+
 const Home = () => {
+  const responsive = useResponsive();
   const navigate = useNavigate();
   // const [form] = Form.useForm();
   const [s, setS] = useSetState<{
@@ -118,7 +125,7 @@ const Home = () => {
       </Form> */}
 
       <List loading={s.loading}>
-        <VirtualList data={s.list} height={ContainerHeight} itemKey="id">
+        <VirtualList data={s.list} height={responsive.large ? 1000 : ContainerHeight} itemKey="id">
           {(item) => (
             <List.Item key={item.id}>
               <Card
