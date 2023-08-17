@@ -143,7 +143,7 @@ const Home = () => {
                           恢复
                         </Button>,
                         <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
-                          <Button> type="link" 删除</Button>
+                          <Button type="link"> 删除</Button>
                         </Popconfirm>,
                       ]
                     : []
