@@ -1,39 +1,46 @@
 import { useMount } from 'ahooks';
 import { Button, Input, Form, Select, DatePicker } from 'antd';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
-import serviceAxios from './http';
-import Editor from './component/Editor';
-import { disabledDate } from './utils';
+import Editor from '../component/Editor';
+import { disabledDate } from '../utils';
+import serviceAxios from '../http';
+import { ReduxContext } from '../redux';
 
 const CreateTodo = () => {
   const navigate = useNavigate();
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-  const [tags, setTags] = useState<TodoTag[]>([]);
+  const { state, dispatch } = useContext(ReduxContext);
 
   const goHome = () => {
     navigate('/');
   };
 
   const create = (values: ITodo) => {
-    setLoading(true);
+    dispatch({ type: 'UPDATE', payload: { loading: true } });
+
     serviceAxios.post('/todos', { ...values }).finally(() => {
-      setLoading(false);
+      dispatch({ type: 'UPDATE', payload: { loading: false } });
+
       form.resetFields();
       goHome();
     });
   };
 
   useMount(() => {
-    setLoading(true);
+    dispatch({ type: 'UPDATE', payload: { loading: true } });
+
     serviceAxios('/tags')
       .then((res) => {
-        setTags(res.data);
+        dispatch({ type: 'UPDATE', payload: { tags: res.data } });
       })
       .finally(() => {
-        setLoading(false);
+        dispatch({ type: 'UPDATE', payload: { loading: false } });
       });
+
+    serviceAxios.get('/users').then((res) => {
+      dispatch({ type: 'UPDATE', payload: { user: res.data } });
+    });
   });
 
   return (
@@ -82,11 +89,11 @@ const CreateTodo = () => {
           },
         ]}
       >
-        <Select options={tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))} />
+        <Select options={state.tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))} />
       </Form.Item>
 
       <Form.Item>
-        <Button loading={loading} type="primary" htmlType="submit">
+        <Button loading={state.loading} type="primary" htmlType="submit">
           创建
         </Button>
       </Form.Item>

@@ -1,33 +1,39 @@
 import { Routes, Route } from 'react-router-dom';
 import { ConfigProvider } from 'antd';
+import { useReducer } from 'react';
 import zhCn from 'antd/locale/zh_CN';
-import Login from './Login';
-import Home from './Home';
-import ITag from './Tag';
-import NoMatch from './NoMatch';
-import CreateTodo from './CreateTodo';
-import EditTodo from './EditTodo';
-import Layout from './Layout';
-import Register from './Register';
-import UserList from './UserList';
+import Login from './pages/Login';
+import Home from './pages/Home';
+import ITag from './pages/Tag';
+import NoMatch from './pages/NoMatch';
+import CreateTodo from './pages/CreateTodo';
+import EditTodo from './pages/EditTodo';
+import Layout from './pages/Layout';
+import Register from './pages/Register';
+import UserList from './pages/UserList';
+import { initialState, reducer, ReduxContext } from './redux';
 
-const App = () => {
+const Router = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
   return (
     <ConfigProvider locale={zhCn}>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="create" element={<CreateTodo />} />
-          <Route path="login" element={<Login />} />
-          <Route path="tag" element={<ITag />} />
-          <Route path="register" element={<Register />} />
-          <Route path="edit" element={<EditTodo />} />
-          <Route path="users" element={<UserList />} />
-          <Route path="*" element={<NoMatch />} />
-        </Route>
-      </Routes>
+      <ReduxContext.Provider value={{ state, dispatch }}>
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<Home />} />
+            <Route path="create" element={<CreateTodo />} />
+            <Route path="login" element={<Login />} />
+            <Route path="tag" element={<ITag />} />
+            <Route path="register" element={<Register />} />
+            <Route path="edit" element={<EditTodo />} />
+            <Route path="users" element={<UserList />} />
+            <Route path="*" element={<NoMatch />} />
+          </Route>
+        </Routes>
+      </ReduxContext.Provider>
     </ConfigProvider>
   );
 };
 
-export default App;
+export default Router;

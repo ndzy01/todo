@@ -1,14 +1,16 @@
-import serviceAxios from './http';
+import serviceAxios from '../http';
 import { useMount } from 'ahooks';
 import { Button, List, Space, Tag, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
-import { useState } from 'react';
-import { ContainerHeight } from './const';
+import { useState, useContext } from 'react';
+import { ContainerHeight } from '../const';
+import { ReduxContext } from '../redux';
 
 const UserList = () => {
   const [s, setS] = useState<User[]>([]);
   const [loading, setLoading] = useState(false);
+  const { state, dispatch } = useContext(ReduxContext);
 
   const getAll = () => {
     setLoading(true);
@@ -20,11 +22,11 @@ const UserList = () => {
       .finally(() => {
         setLoading(false);
       });
-  };
 
-  useMount(() => {
-    getAll();
-  });
+    serviceAxios.get('/users').then((res) => {
+      dispatch({ type: 'UPDATE', payload: { user: res.data } });
+    });
+  };
 
   const del = (item: User) => {
     setLoading(true);
@@ -32,6 +34,10 @@ const UserList = () => {
       getAll();
     });
   };
+
+  useMount(() => {
+    getAll();
+  });
 
   return (
     <List loading={loading}>
@@ -42,9 +48,11 @@ const UserList = () => {
               title={
                 <div className="between">
                   用户名：{item.nickname}
-                  <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
-                    <Button> 删除</Button>
-                  </Popconfirm>
+                  {state.user?.role === '0' && (
+                    <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
+                      <Button> 删除</Button>
+                    </Popconfirm>
+                  )}
                 </div>
               }
               description={

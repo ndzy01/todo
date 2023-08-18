@@ -1,7 +1,7 @@
 import { Button, Form, Input } from 'antd';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import serviceAxios from './http';
+import serviceAxios from '../http';
 
 const formItemLayout = {
   labelCol: {

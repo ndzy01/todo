@@ -1,14 +1,16 @@
 import { useMount } from 'ahooks';
-import serviceAxios from './http';
-import { useState } from 'react';
+import serviceAxios from '../http';
+import { useState, useContext } from 'react';
 import { Button, List, Space, Popconfirm, Input, Spin } from 'antd';
 import VirtualList from 'rc-virtual-list';
-import { ContainerHeight } from './const';
+import { ContainerHeight } from '../const';
+import { ReduxContext } from '../redux';
 
 const ITag: React.FC = () => {
   const [tags, setTags] = useState<{ id: string; name: string; userName: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [inputValue, setInputValue] = useState('');
+  const { dispatch } = useContext(ReduxContext);
 
   const getAllTags = () => {
     setLoading(true);
@@ -20,11 +22,11 @@ const ITag: React.FC = () => {
       .finally(() => {
         setLoading(false);
       });
-  };
 
-  useMount(() => {
-    getAllTags();
-  });
+    serviceAxios.get('/users').then((res) => {
+      dispatch({ type: 'UPDATE', payload: { user: res.data } });
+    });
+  };
 
   const del = (id: string) => {
     setLoading(true);
@@ -44,6 +46,10 @@ const ITag: React.FC = () => {
       setInputValue('');
     });
   };
+
+  useMount(() => {
+    getAllTags();
+  });
 
   return (
     <div>

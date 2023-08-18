@@ -1,25 +1,26 @@
 import { useMount } from 'ahooks';
 import { Button, Input, Form, Select, DatePicker } from 'antd';
-import { useState } from 'react';
+import { useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import dayjs from 'dayjs';
-import serviceAxios from './http';
-import Editor from './component/Editor';
-import { disabledDate } from './utils';
+import serviceAxios from '../http';
+import Editor from '../component/Editor';
+import { disabledDate } from '../utils';
+import { ReduxContext } from '../redux';
 
 const EditTodo = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false);
-  const [tags, setTags] = useState<TodoTag[]>([]);
+  const { state: todoState, dispatch } = useContext(ReduxContext);
 
   const goHome = () => {
     navigate('/');
   };
 
   const edit = (values: ITodoRecord) => {
-    setLoading(true);
+    dispatch({ type: 'UPDATE', payload: { loading: true } });
+
     serviceAxios
       .patch(`/todos/${state.id}`, {
         name: values.name,
@@ -29,21 +30,27 @@ const EditTodo = () => {
         tagId: values.tagId,
       })
       .finally(() => {
-        setLoading(false);
+        dispatch({ type: 'UPDATE', payload: { loading: false } });
+
         form.resetFields();
         goHome();
       });
   };
 
   useMount(() => {
-    setLoading(true);
+    dispatch({ type: 'UPDATE', payload: { loading: true } });
+
     serviceAxios('/tags')
       .then((res) => {
-        setTags(res.data);
+        dispatch({ type: 'UPDATE', payload: { tags: res.data } });
       })
       .finally(() => {
-        setLoading(false);
+        dispatch({ type: 'UPDATE', payload: { loading: false } });
       });
+
+    serviceAxios.get('/users').then((res) => {
+      dispatch({ type: 'UPDATE', payload: { user: res.data } });
+    });
   });
 
   return (
@@ -104,11 +111,13 @@ const EditTodo = () => {
           },
         ]}
       >
-        <Select options={tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))} />
+        <Select
+          options={todoState.tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))}
+        />
       </Form.Item>
 
       <Form.Item>
-        <Button loading={loading} type="primary" htmlType="submit">
+        <Button loading={todoState.loading} type="primary" htmlType="submit">
           保存
         </Button>
       </Form.Item>

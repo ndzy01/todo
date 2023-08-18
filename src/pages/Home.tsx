@@ -1,64 +1,51 @@
-import { useMount, useSetState, configResponsive, useResponsive } from 'ahooks';
-import {
-  Button,
-  List,
-  Space,
-  Tag,
-  Popconfirm,
-  Card,
-  // Select,
-  // Form
-} from 'antd';
+import { useMount } from 'ahooks';
+import { Button, List, Space, Tag, Popconfirm, Card, Select, Form } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { useContext } from 'react';
 import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
-import serviceAxios from './http';
-import Preview from './component/Preview';
-import { ContainerHeight } from './const';
-
-configResponsive({
-  small: 0,
-  middle: 800,
-  large: 1200,
-});
+import Preview from '../component/Preview';
+import { ContainerHeight } from '../const';
+import { useResponsive } from '../hooks';
+import serviceAxios from '../http';
+import { ReduxContext } from '../redux';
 
 const Home = () => {
   const responsive = useResponsive();
   const navigate = useNavigate();
-  // const [form] = Form.useForm();
-  const [s, setS] = useSetState<{
-    list: ITodo[];
-    loading: boolean;
-    tabKey: string;
-    tags: TodoTag[];
-  }>({
-    list: [],
-    loading: false,
-    tabKey: '1',
-    tags: [],
-  });
+  const [form] = Form.useForm();
+  const { state, dispatch } = useContext(ReduxContext);
+
+  const goEdit = (item: ITodo) => {
+    navigate('/edit', { state: { ...item } });
+  };
+
+  const updateUser = () => {
+    serviceAxios.get('/users').then((res) => {
+      dispatch({ type: 'UPDATE', payload: { user: res.data } });
+    });
+  };
 
   const getAllTodo = (params: { tagId?: string } = {}) => {
-    setS({ loading: true });
+    dispatch({ type: 'UPDATE', payload: { loading: true } });
+
     serviceAxios
       .get('/todos', { params: { ...params } })
       .then((res) => {
-        setS({
-          list: res.data,
-          loading: false,
-        });
+        dispatch({ type: 'UPDATE', payload: { list: res.data, loading: false } });
       })
       .finally(() => {
-        setS({ loading: false });
+        dispatch({ type: 'UPDATE', payload: { loading: false } });
       });
 
-    // serviceAxios('/tags').then((res) => {
-    //   setS({ tags: res.data });
-    // });
+    serviceAxios('/tags').then((res) => {
+      dispatch({ type: 'UPDATE', payload: { tags: res.data } });
+    });
   };
 
   const finish = (item: ITodo) => {
-    setS({ loading: true });
+    dispatch({ type: 'UPDATE', payload: { loading: true } });
+
     serviceAxios
       .patch(`/todos/${item.id}`, {
         isDel: true,
@@ -69,14 +56,16 @@ const Home = () => {
   };
 
   const del = (item: ITodo) => {
-    setS({ loading: true });
+    dispatch({ type: 'UPDATE', payload: { loading: true } });
+
     serviceAxios.delete(`/todos/${item.id}`).then(() => {
       getAllTodo();
     });
   };
 
   const recover = (item: ITodo) => {
-    setS({ loading: true });
+    dispatch({ type: 'UPDATE', payload: { loading: true } });
+
     serviceAxios
       .patch(`/todos/${item.id}`, {
         isDel: false,
@@ -88,44 +77,47 @@ const Home = () => {
 
   useMount(() => {
     getAllTodo();
+    updateUser();
   });
 
   return (
     <div>
-      {/* <Form
-        form={form}
-        name="advanced_search"
-        onFinish={(values) => {
-          getAllTodo(values);
-        }}
-      >
-        <Form.Item name="tagId" label="标签">
-          <Select
-            placeholder="请选择标签"
-            allowClear
-            options={s.tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))}
-          />
-        </Form.Item>
+      {responsive.large && (
+        <Form
+          form={form}
+          name="advanced_search"
+          onFinish={(values) => {
+            getAllTodo(values);
+          }}
+        >
+          <Form.Item name="tagId" label="标签">
+            <Select
+              placeholder="请选择标签"
+              allowClear
+              options={state.tags.map((item) => ({ label: `${item.name}-(创建者: ${item.userName})`, value: item.id }))}
+            />
+          </Form.Item>
 
-        <div className="text-align-right">
-          <Space size="small">
-            <Button type="primary" htmlType="submit">
-              搜索
-            </Button>
-            <Button
-              onClick={() => {
-                form.resetFields();
-                getAllTodo();
-              }}
-            >
-              清除
-            </Button>
-          </Space>
-        </div>
-      </Form> */}
+          <div className="text-align-right">
+            <Space size="small">
+              <Button type="primary" htmlType="submit">
+                搜索
+              </Button>
+              <Button
+                onClick={() => {
+                  form.resetFields();
+                  getAllTodo();
+                }}
+              >
+                清除
+              </Button>
+            </Space>
+          </div>
+        </Form>
+      )}
 
-      <List loading={s.loading}>
-        <VirtualList data={s.list} height={responsive.large ? 1000 : ContainerHeight} itemKey="id">
+      <List loading={state.loading}>
+        <VirtualList data={state.list} height={responsive.large ? 888 : ContainerHeight} itemKey="id">
           {(item) => (
             <List.Item key={item.id}>
               <Card
@@ -146,7 +138,7 @@ const Home = () => {
                 actions={
                   item.isDel === 0
                     ? [
-                        <Button type="link" onClick={() => navigate('/edit', { state: { ...item } })}>
+                        <Button type="link" onClick={() => goEdit(item)}>
                           编辑
                         </Button>,
                         <Button type="link" onClick={() => finish(item)}>
