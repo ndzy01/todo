@@ -117,7 +117,7 @@ const Home = () => {
       )}
 
       <List loading={state.loading}>
-        <VirtualList data={state.list} height={responsive.large ? 888 : ContainerHeight} itemKey="id">
+        <VirtualList data={state.list} height={responsive.large ? 1020 : ContainerHeight} itemKey="id">
           {(item) => (
             <List.Item key={item.id}>
               <Card
