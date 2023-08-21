@@ -88,7 +88,16 @@ const UpdateArticle = () => {
             <Input.TextArea rows={1} />
           </Form.Item>
 
-          <Form.Item name="content" label="详情">
+          <Form.Item
+            name="content"
+            label="内容"
+            rules={[
+              {
+                required: true,
+                message: '内容不能为空',
+              },
+            ]}
+          >
             <Editor />
           </Form.Item>
 

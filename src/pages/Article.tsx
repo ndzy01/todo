@@ -4,7 +4,7 @@ import { useNavigate, createSearchParams } from 'react-router-dom';
 import { useContext } from 'react';
 import { FileAddOutlined, FormOutlined, FileExcelOutlined, EyeOutlined } from '@ant-design/icons';
 import { useMount } from 'ahooks';
-import { Tree, Space, Popconfirm, Spin } from 'antd';
+import { Tree, Space, Popconfirm, Spin, Button } from 'antd';
 import type { DirectoryTreeProps } from 'antd/es/tree';
 import serviceAxios from '../http';
 import { ReduxContext } from '../redux';
@@ -30,7 +30,7 @@ const Article = () => {
                 <EyeOutlined onClick={() => goView(item)} />
                 <FileAddOutlined onClick={() => goCreate(item)} />
                 <FormOutlined onClick={() => goEdit(item)} />
-                {isLeaf && item.pId !== '0' && (
+                {isLeaf && (
                   <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
                     <FileExcelOutlined />
                   </Popconfirm>
@@ -61,7 +61,7 @@ const Article = () => {
         setS(arrayToTree(res.data, '0'));
         dispatch({ type: 'UPDATE', payload: { loading: false } });
       })
-      .finally(() => {
+      .catch(() => {
         dispatch({ type: 'UPDATE', payload: { loading: false } });
       });
   };
@@ -82,7 +82,7 @@ const Article = () => {
       .then(() => {
         getAll();
       })
-      .finally(() => {
+      .catch(() => {
         dispatch({ type: 'UPDATE', payload: { loading: false } });
       });
   };
@@ -91,8 +91,15 @@ const Article = () => {
     dispatch({ type: 'UPDATE', payload: { article: info.node as unknown as ITree } });
   };
 
+  const updateUser = () => {
+    serviceAxios.get('/users').then((res) => {
+      dispatch({ type: 'UPDATE', payload: { user: res.data } });
+    });
+  };
+
   useMount(() => {
     getAll();
+    updateUser;
   });
 
   return (
@@ -101,13 +108,16 @@ const Article = () => {
         (state.loading ? (
           <Spin />
         ) : (
-          <DirectoryTree
-            selectedKeys={state.article?.id ? [state.article?.id] : []}
-            onSelect={onSelect}
-            showLine
-            defaultExpandAll
-            treeData={s}
-          />
+          <>
+            <Button onClick={() => navigate('/updateArticle', { state: { pId: '0' } })}>创建根目录</Button>
+            <DirectoryTree
+              selectedKeys={state.article?.id ? [state.article?.id] : []}
+              onSelect={onSelect}
+              showLine
+              defaultExpandAll
+              treeData={s}
+            />
+          </>
         ))}
     </div>
   );
