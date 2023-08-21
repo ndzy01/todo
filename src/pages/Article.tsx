@@ -104,10 +104,10 @@ const Article = () => {
 
   return (
     <div>
-      {s.length > 0 &&
-        (state.loading ? (
-          <Spin />
-        ) : (
+      {state.loading ? (
+        <Spin />
+      ) : (
+        s.length > 0 && (
           <>
             <Button onClick={() => navigate('/updateArticle', { state: { pId: '0' } })}>创建根目录</Button>
             <DirectoryTree
@@ -118,7 +118,8 @@ const Article = () => {
               treeData={s}
             />
           </>
-        ))}
+        )
+      )}
     </div>
   );
 };
