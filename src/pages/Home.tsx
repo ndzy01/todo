@@ -1,6 +1,6 @@
 import { useMount } from 'ahooks';
 import { Button, List, Space, Tag, Popconfirm, Card, Select, Form } from 'antd';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useContext } from 'react';
 import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
@@ -17,7 +17,7 @@ const Home = () => {
   const { state, dispatch } = useContext(ReduxContext);
 
   const goEdit = (item: ITodo) => {
-    navigate('/edit', { state: { ...item } });
+    navigate('/editTodo', { state: { ...item } });
   };
 
   const updateUser = () => {
@@ -82,6 +82,10 @@ const Home = () => {
 
   return (
     <div>
+      <Space>
+        <Link to="/createTodo">创建待办</Link>
+        <Link to="/tagsTodoManage"> 标签管理</Link>
+      </Space>
       {responsive.large && (
         <Form
           form={form}

@@ -5,6 +5,7 @@ interface State {
   user?: User;
   list: ITodo[];
   tags: TodoTag[];
+  article?: ITree;
 }
 
 interface Action {

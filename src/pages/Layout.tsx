@@ -47,16 +47,12 @@ const Layout = () => {
       disabled: true,
     },
     {
-      label: '首页',
+      label: '待办',
       key: '/',
     },
     {
-      label: '创建待办',
-      key: '/create',
-    },
-    {
-      label: '标签管理',
-      key: '/tag',
+      label: '文章',
+      key: '/article',
     },
     {
       label: '登陆',
@@ -79,7 +75,7 @@ const Layout = () => {
         <Menu className="todo-menu" onClick={onClick} mode="horizontal" items={items} />
       </Header>
       <Content>
-        <div className="layout-content p-24">
+        <div className="layout-content p-16">
           <Outlet />
         </div>
       </Content>

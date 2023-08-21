@@ -11,6 +11,8 @@ import EditTodo from './pages/EditTodo';
 import Layout from './pages/Layout';
 import Register from './pages/Register';
 import UserList from './pages/UserList';
+import Article from './pages/Article';
+import UpdateArticle from './pages/UpdateArticle';
 import { initialState, reducer, ReduxContext } from './redux';
 
 const Router = () => {
@@ -22,12 +24,14 @@ const Router = () => {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
-            <Route path="create" element={<CreateTodo />} />
+            <Route path="createTodo" element={<CreateTodo />} />
             <Route path="login" element={<Login />} />
-            <Route path="tag" element={<ITag />} />
+            <Route path="tagsTodoManage" element={<ITag />} />
             <Route path="register" element={<Register />} />
-            <Route path="edit" element={<EditTodo />} />
+            <Route path="editTodo" element={<EditTodo />} />
             <Route path="users" element={<UserList />} />
+            <Route path="article" element={<Article />} />
+            <Route path="updateArticle" element={<UpdateArticle />} />
             <Route path="*" element={<NoMatch />} />
           </Route>
         </Routes>

@@ -36,3 +36,12 @@ interface User {
   createdAt: string;
   updatedAt: string;
 }
+
+interface ITree {
+  id: string;
+  pId: string;
+  name: string;
+  content: string;
+  isLeaf: boolean;
+  children: ITree[];
+}

@@ -11,6 +11,10 @@ body {
   text-align: right;
 }
 
+.text-center {
+  text-align: center;
+}
+
 .todo-home-tags {
   margin-top: 16px;
   flex-wrap: wrap;
@@ -44,6 +48,10 @@ body {
   width: 200px;
 }
 
+.w-88 {
+  width: 88%;
+}
+
 .mt-16 {
   margin-top: 16px;
 }
@@ -51,6 +59,10 @@ body {
 .between {
   display: flex;
   justify-content: space-between;
+}
+
+.inline-flex {
+  display: inline-flex;
 }
 
 .ant-list-item {
@@ -78,4 +90,12 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.px-16 {
+  padding: 0 16px;
+}
+
+.p-16 {
+  padding: 16px;
 }

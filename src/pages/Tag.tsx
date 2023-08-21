@@ -57,6 +57,7 @@ const ITag: React.FC = () => {
         <Spin />
       ) : (
         <>
+          <h1 className="text-center">标签管理</h1>
           <Space.Compact className="w-100">
             <Input placeholder="请输入" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
             <Button type="primary" onClick={handleCreate}>

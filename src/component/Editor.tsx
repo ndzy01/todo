@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useState, useEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 import { generateUUID } from './utils';
@@ -14,12 +14,14 @@ const Editor = ({
   onChange?: (v: string) => void;
   placeholder?: string;
 }) => {
-  const [, setVd] = useState<Vditor>();
   const id = generateUUID();
   const responsive = useResponsive();
 
-  useEffect(() => {
-    const vditor = new Vditor(`vditor-${id}`, {
+  useLayoutEffect(() => {
+    new Vditor(`vditor-${id}`, {
+      cache: {
+        enable: false,
+      },
       toolbar: responsive.large
         ? [
             'outline',
@@ -55,16 +57,18 @@ const Editor = ({
       input: (v) => {
         onChange && onChange(v);
       },
-      minHeight: 180,
+      outline: {
+        // 显示大纲
+        enable: true,
+        position: 'left',
+      },
+      minHeight: 200,
       placeholder,
       value: value || '',
-      after: () => {
-        setVd(vditor);
-      },
     });
   }, []);
 
-  return <div id={`vditor-${id}`} className="vditor" />;
+  return <div id={`vditor-${id}`} className="ndzy-vditor" />;
 };
 
 export default Editor;
