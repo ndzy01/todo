@@ -52,10 +52,10 @@ export const useTodo = () => {
   };
 
   // 创建待办
-  const createTodo = (values: ITodo) => {
+  const createTodo = (values: any) => {
     dispatch({ type: 'UPDATE', payload: { loading: true } });
     serviceAxios
-      .post('/todos', { ...values })
+      .post('/todos', { ...values, detail: values.detail.md, detailHtml: values.detail.html })
       .then(() => {
         dispatch({ type: 'UPDATE', payload: { loading: false } });
         goPage('/');
@@ -66,12 +66,13 @@ export const useTodo = () => {
   };
 
   // 编辑待办
-  const editTodo = (values: ITodoRecord, state: { id: string }) => {
+  const editTodo = (values: any, state: { id: string }) => {
     dispatch({ type: 'UPDATE', payload: { loading: true } });
     serviceAxios
       .patch(`/todos/${state.id}`, {
         name: values.name,
-        detail: values.detail,
+        detail: values.detail.md,
+        detailHtml: values.detail.html,
         link: values.link,
         deadline: dayjs(values.deadline).format('YYYY-MM-DD'),
         tagId: values.tagId,
