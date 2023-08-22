@@ -1,7 +1,7 @@
 import { Button, Form, Input } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import serviceAxios from '../http';
+import { useContext } from 'react';
+import { useTodo } from '../hooks';
+import { ReduxContext } from '../redux';
 
 const formItemLayout = {
   labelCol: {
@@ -15,25 +15,8 @@ const formItemLayout = {
 };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 const Login = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
-  const login = (values: { mobile: string; password: string }) => {
-    setLoading(true);
-    serviceAxios
-      .post('/users/login', { ...values })
-      .then((res) => {
-        if (res && res.data && res.data.token) {
-          localStorage.setItem('token', res.data.token);
-
-          navigate('/');
-          window.location.reload();
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  const { login } = useTodo();
+  const { state } = useContext(ReduxContext);
 
   return (
     <Form {...formItemLayout} name="login" onFinish={login} scrollToFirstError>
@@ -56,7 +39,7 @@ const Login = () => {
       </Form.Item>
 
       <Form.Item {...buttonItemLayout}>
-        <Button loading={loading} type="primary" htmlType="submit">
+        <Button loading={state.loading} type="primary" htmlType="submit">
           登录
         </Button>
       </Form.Item>

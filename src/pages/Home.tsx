@@ -1,90 +1,32 @@
 import { useMount } from 'ahooks';
 import { Button, List, Space, Tag, Popconfirm, Card, Select, Form } from 'antd';
-import { useNavigate, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useContext } from 'react';
 import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
 import Preview from '../component/Preview';
 import { ContainerHeight } from '../const';
 import { useResponsive } from '../hooks';
-import serviceAxios from '../http';
 import { ReduxContext } from '../redux';
+import { useTodo } from '../hooks';
 
 const Home = () => {
+  const { initUser, initTags, goPage, getAllTodo, finishTodo, delTodo, recoverTodo } = useTodo();
   const responsive = useResponsive();
-  const navigate = useNavigate();
   const [form] = Form.useForm();
-  const { state, dispatch } = useContext(ReduxContext);
-
-  const goEdit = (item: ITodo) => {
-    navigate('/editTodo', { state: { ...item } });
-  };
-
-  const updateUser = () => {
-    serviceAxios.get('/users').then((res) => {
-      dispatch({ type: 'UPDATE', payload: { user: res.data } });
-    });
-  };
-
-  const getAllTodo = (params: { tagId?: string } = {}) => {
-    dispatch({ type: 'UPDATE', payload: { loading: true } });
-
-    serviceAxios
-      .get('/todos', { params: { ...params } })
-      .then((res) => {
-        dispatch({ type: 'UPDATE', payload: { list: res.data, loading: false } });
-      })
-      .finally(() => {
-        dispatch({ type: 'UPDATE', payload: { loading: false } });
-      });
-
-    serviceAxios('/tags').then((res) => {
-      dispatch({ type: 'UPDATE', payload: { tags: res.data } });
-    });
-  };
-
-  const finish = (item: ITodo) => {
-    dispatch({ type: 'UPDATE', payload: { loading: true } });
-
-    serviceAxios
-      .patch(`/todos/${item.id}`, {
-        isDel: true,
-      })
-      .then(() => {
-        getAllTodo();
-      });
-  };
-
-  const del = (item: ITodo) => {
-    dispatch({ type: 'UPDATE', payload: { loading: true } });
-
-    serviceAxios.delete(`/todos/${item.id}`).then(() => {
-      getAllTodo();
-    });
-  };
-
-  const recover = (item: ITodo) => {
-    dispatch({ type: 'UPDATE', payload: { loading: true } });
-
-    serviceAxios
-      .patch(`/todos/${item.id}`, {
-        isDel: false,
-      })
-      .then(() => {
-        getAllTodo();
-      });
-  };
+  const { state } = useContext(ReduxContext);
 
   useMount(() => {
+    initUser();
+    initTags();
     getAllTodo();
-    updateUser();
   });
 
   return (
     <div>
       <Space>
         <Link to="/createTodo">创建待办</Link>
-        <Link to="/tagsTodoManage"> 标签管理</Link>
+        <Link to="/tagsManage"> 标签管理</Link>
       </Space>
       {responsive.large && (
         <Form
@@ -142,19 +84,19 @@ const Home = () => {
                 actions={
                   item.isDel === 0
                     ? [
-                        <Button type="link" onClick={() => goEdit(item)}>
+                        <Button type="link" onClick={() => goPage('/editTodo', { state: { ...item } })}>
                           编辑
                         </Button>,
-                        <Button type="link" onClick={() => finish(item)}>
+                        <Button type="link" onClick={() => finishTodo(item)}>
                           完成
                         </Button>,
                       ]
                     : item.isDel === 1
                     ? [
-                        <Button type="link" onClick={() => recover(item)}>
+                        <Button type="link" onClick={() => recoverTodo(item)}>
                           恢复
                         </Button>,
-                        <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
+                        <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => delTodo(item)}>
                           <Button type="link"> 删除</Button>
                         </Popconfirm>,
                       ]

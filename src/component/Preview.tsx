@@ -1,8 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import { useLayoutEffect } from 'react';
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 import { generateUUID } from './utils';
-import { useLayoutEffect } from 'react';
 
 const Preview = ({ md }: { md: string }) => {
   const id = generateUUID();

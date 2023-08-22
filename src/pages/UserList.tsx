@@ -1,47 +1,23 @@
-import serviceAxios from '../http';
 import { useMount } from 'ahooks';
 import { Button, List, Space, Tag, Popconfirm } from 'antd';
 import dayjs from 'dayjs';
 import VirtualList from 'rc-virtual-list';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import { ContainerHeight } from '../const';
 import { ReduxContext } from '../redux';
+import { useTodo } from '../hooks';
 
 const UserList = () => {
-  const [s, setS] = useState<User[]>([]);
-  const [loading, setLoading] = useState(false);
-  const { state, dispatch } = useContext(ReduxContext);
-
-  const getAll = () => {
-    setLoading(true);
-    serviceAxios
-      .get('/users/all')
-      .then((res) => {
-        setS(res.data);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-
-    serviceAxios.get('/users').then((res) => {
-      dispatch({ type: 'UPDATE', payload: { user: res.data } });
-    });
-  };
-
-  const del = (item: User) => {
-    setLoading(true);
-    serviceAxios.delete(`/users/${item.id}`).then(() => {
-      getAll();
-    });
-  };
+  const { users, delUser, getUsers } = useTodo();
+  const { state } = useContext(ReduxContext);
 
   useMount(() => {
-    getAll();
+    getUsers();
   });
 
   return (
-    <List loading={loading}>
-      <VirtualList data={s} height={ContainerHeight} itemKey="id">
+    <List loading={state.loading}>
+      <VirtualList data={users} height={ContainerHeight} itemKey="id">
         {(item) => (
           <List.Item key={item.id}>
             <List.Item.Meta
@@ -49,7 +25,7 @@ const UserList = () => {
                 <div className="between">
                   用户名：{item.nickname}
                   {state.user?.role === '0' && (
-                    <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => del(item)}>
+                    <Popconfirm title="删除将无法恢复,确定删除?" onConfirm={() => delUser(item)}>
                       <Button> 删除</Button>
                     </Popconfirm>
                   )}

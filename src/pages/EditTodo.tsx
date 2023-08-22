@@ -1,56 +1,21 @@
 import { useMount } from 'ahooks';
 import { Button, Input, Form, Select, DatePicker } from 'antd';
 import { useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import dayjs from 'dayjs';
-import serviceAxios from '../http';
 import Editor from '../component/Editor';
 import { disabledDate } from '../utils';
 import { ReduxContext } from '../redux';
+import { useTodo } from '../hooks';
 
 const EditTodo = () => {
-  const navigate = useNavigate();
+  const { initTags, initUser, editTodo } = useTodo();
   const { state } = useLocation();
-  const [form] = Form.useForm();
-  const { state: todoState, dispatch } = useContext(ReduxContext);
-
-  const goHome = () => {
-    navigate('/');
-  };
-
-  const edit = (values: ITodoRecord) => {
-    dispatch({ type: 'UPDATE', payload: { loading: true } });
-
-    serviceAxios
-      .patch(`/todos/${state.id}`, {
-        name: values.name,
-        detail: values.detail,
-        link: values.link,
-        deadline: dayjs(values.deadline).format('YYYY-MM-DD'),
-        tagId: values.tagId,
-      })
-      .finally(() => {
-        dispatch({ type: 'UPDATE', payload: { loading: false } });
-
-        form.resetFields();
-        goHome();
-      });
-  };
+  const { state: todoState } = useContext(ReduxContext);
 
   useMount(() => {
-    dispatch({ type: 'UPDATE', payload: { loading: true } });
-
-    serviceAxios('/tags')
-      .then((res) => {
-        dispatch({ type: 'UPDATE', payload: { tags: res.data } });
-      })
-      .finally(() => {
-        dispatch({ type: 'UPDATE', payload: { loading: false } });
-      });
-
-    serviceAxios.get('/users').then((res) => {
-      dispatch({ type: 'UPDATE', payload: { user: res.data } });
-    });
+    initUser();
+    initTags();
   });
 
   return (
@@ -63,9 +28,8 @@ const EditTodo = () => {
         link: state.link,
         tagId: state.tagId,
       }}
-      onFinish={edit}
+      onFinish={(values) => editTodo(values, state)}
       scrollToFirstError
-      form={form}
     >
       <Form.Item>
         <h1 className="text-center">编辑待办</h1>
@@ -97,7 +61,16 @@ const EditTodo = () => {
         <DatePicker className="w-100" format="YYYY-MM-DD" disabledDate={disabledDate} />
       </Form.Item>
 
-      <Form.Item name="detail" label="详情">
+      <Form.Item
+        name="detail"
+        label="详情"
+        rules={[
+          {
+            required: true,
+            message: '详情不能为空',
+          },
+        ]}
+      >
         <Editor />
       </Form.Item>
 
