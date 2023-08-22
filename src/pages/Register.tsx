@@ -1,7 +1,7 @@
 import { Button, Form, Input } from 'antd';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import serviceAxios from '../http';
+import { useContext } from 'react';
+import { useTodo } from '../hooks';
+import { ReduxContext } from '../redux';
 
 const formItemLayout = {
   labelCol: {
@@ -15,25 +15,11 @@ const formItemLayout = {
 };
 const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
 const Register = () => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
-  const onFinish = (values: { nickname: string; mobile: string; password: string }) => {
-    setLoading(true);
-    serviceAxios
-      .post('/users/register', { ...values })
-      .then((res) => {
-        if (res.status === 0) {
-          navigate('/login');
-        }
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
+  const { register } = useTodo();
+  const { state } = useContext(ReduxContext);
 
   return (
-    <Form {...formItemLayout} name="register" onFinish={onFinish} scrollToFirstError>
+    <Form {...formItemLayout} name="register" onFinish={register} scrollToFirstError>
       <Form.Item
         name="nickname"
         label="昵称"
@@ -84,7 +70,7 @@ const Register = () => {
       </Form.Item>
 
       <Form.Item {...buttonItemLayout}>
-        <Button loading={loading} type="primary" htmlType="submit">
+        <Button loading={state.loading} type="primary" htmlType="submit">
           注册
         </Button>
       </Form.Item>

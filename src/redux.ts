@@ -5,7 +5,6 @@ interface State {
   user?: User;
   list: ITodo[];
   tags: TodoTag[];
-  article?: ITree;
 }
 
 interface Action {
@@ -18,7 +17,7 @@ interface ContextProps {
   dispatch: React.Dispatch<Action>;
 }
 
-export const initialState = {
+export const initialState: State = {
   loading: false,
   list: [],
   tags: [],

@@ -1,50 +1,22 @@
 import { useMount } from 'ahooks';
 import { Button, Input, Form, Select, DatePicker } from 'antd';
 import { useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
 import Editor from '../component/Editor';
 import { disabledDate } from '../utils';
-import serviceAxios from '../http';
 import { ReduxContext } from '../redux';
+import { useTodo } from '../hooks';
 
 const CreateTodo = () => {
-  const navigate = useNavigate();
-  const [form] = Form.useForm();
-  const { state, dispatch } = useContext(ReduxContext);
-
-  const goHome = () => {
-    navigate('/');
-  };
-
-  const create = (values: ITodo) => {
-    dispatch({ type: 'UPDATE', payload: { loading: true } });
-
-    serviceAxios.post('/todos', { ...values }).finally(() => {
-      dispatch({ type: 'UPDATE', payload: { loading: false } });
-
-      form.resetFields();
-      goHome();
-    });
-  };
+  const { initTags, initUser, createTodo } = useTodo();
+  const { state } = useContext(ReduxContext);
 
   useMount(() => {
-    dispatch({ type: 'UPDATE', payload: { loading: true } });
-
-    serviceAxios('/tags')
-      .then((res) => {
-        dispatch({ type: 'UPDATE', payload: { tags: res.data } });
-      })
-      .finally(() => {
-        dispatch({ type: 'UPDATE', payload: { loading: false } });
-      });
-
-    serviceAxios.get('/users').then((res) => {
-      dispatch({ type: 'UPDATE', payload: { user: res.data } });
-    });
+    initUser();
+    initTags();
   });
 
   return (
-    <Form name="create" onFinish={create} scrollToFirstError form={form}>
+    <Form name="create" onFinish={(values) => createTodo(values)} scrollToFirstError>
       <Form.Item>
         <h1 className="text-center">创建待办</h1>
       </Form.Item>
@@ -75,7 +47,16 @@ const CreateTodo = () => {
         <DatePicker className="w-100" format="YYYY-MM-DD" disabledDate={disabledDate} />
       </Form.Item>
 
-      <Form.Item name="detail" label="详情">
+      <Form.Item
+        name="detail"
+        label="详情"
+        rules={[
+          {
+            required: true,
+            message: '详情不能为空',
+          },
+        ]}
+      >
         <Editor />
       </Form.Item>
 
