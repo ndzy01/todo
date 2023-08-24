@@ -24,7 +24,7 @@ const EditTodo = () => {
       initialValues={{
         name: state.name,
         deadline: dayjs(state.deadline),
-        detail: { md: state.detail, html: state.detailHtml },
+        detail: state.detail,
         link: state.link,
         tagId: state.tagId,
       }}

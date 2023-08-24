@@ -10,15 +10,15 @@ const Editor = ({
   onChange,
   placeholder = '请输入',
 }: {
-  value?: { md: string; html: string };
-  onChange?: (v: { md: string; html: string }) => void;
+  value?: string;
+  onChange?: (v: string) => void;
   placeholder?: string;
 }) => {
   const id = generateUUID();
   const responsive = useResponsive();
 
   useLayoutEffect(() => {
-    const vditor = new Vditor(`vditor-${id}`, {
+    new Vditor(`vditor-${id}`, {
       cache: {
         enable: false,
       },
@@ -55,7 +55,7 @@ const Editor = ({
           ]
         : ['ordered-list', 'fullscreen'],
       input: (v) => {
-        onChange && onChange({ md: v, html: vditor.getHTML() });
+        onChange && onChange(v);
       },
       outline: {
         // 显示大纲
@@ -64,7 +64,7 @@ const Editor = ({
       },
       minHeight: 200,
       placeholder,
-      value: value?.md || '',
+      value: value || '',
     });
   }, []);
 

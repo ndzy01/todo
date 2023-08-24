@@ -103,7 +103,7 @@ const Home = () => {
                     : []
                 }
               >
-                <Preview md={item.detail} />
+                <Preview value={item.detail} />
                 <Space className="todo-home-tags">
                   <Tag color="blue">创建人：{item.userName || '--'}</Tag>
                   <Tag color="green">标签：{item.tagName || '--'}</Tag>

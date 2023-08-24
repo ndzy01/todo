@@ -55,7 +55,7 @@ export const useTodo = () => {
   const createTodo = (values: any) => {
     dispatch({ type: 'UPDATE', payload: { loading: true } });
     serviceAxios
-      .post('/todos', { ...values, detail: values.detail.md, detailHtml: values.detail.html })
+      .post('/todos', { ...values, operationSource: 'h5' })
       .then(() => {
         dispatch({ type: 'UPDATE', payload: { loading: false } });
         goPage('/');
@@ -71,8 +71,7 @@ export const useTodo = () => {
     serviceAxios
       .patch(`/todos/${state.id}`, {
         name: values.name,
-        detail: values.detail.md,
-        detailHtml: values.detail.html,
+        detail: values.detail,
         link: values.link,
         deadline: dayjs(values.deadline).format('YYYY-MM-DD'),
         tagId: values.tagId,
@@ -90,7 +89,7 @@ export const useTodo = () => {
   const getAllTodo = (params: { tagId?: string } = {}) => {
     dispatch({ type: 'UPDATE', payload: { loading: true } });
     serviceAxios
-      .get('/todos', { params: { ...params } })
+      .get('/todos', { params: { ...params, operationSource: 'h5' } })
       .then((res) => {
         dispatch({ type: 'UPDATE', payload: { list: res.data, loading: false } });
       })

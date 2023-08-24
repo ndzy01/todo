@@ -4,7 +4,7 @@ import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 import { generateUUID } from './utils';
 
-const Preview = ({ md }: { md: string }) => {
+const Preview = ({ value }: { value: string }) => {
   const id = generateUUID();
 
   useLayoutEffect(() => {
@@ -14,7 +14,7 @@ const Preview = ({ md }: { md: string }) => {
       },
       toolbar: ['fullscreen', 'outline', 'preview'],
       minHeight: 200,
-      value: md || '',
+      value: value || '',
       outline: {
         // 显示大纲
         enable: true,
@@ -27,7 +27,7 @@ const Preview = ({ md }: { md: string }) => {
         VD!.vditor!.toolbar!.elements!.preview!.firstElementChild!.dispatchEvent(evt);
       },
     });
-  }, [md]);
+  }, [value]);
 
   return <div id={`preview-${id}`} className="ndzy-preview" />;
 };
