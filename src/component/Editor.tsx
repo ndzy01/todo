@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-// @ts-nocheck
 import { useLayoutEffect, useState } from 'react';
-// import Vditor from 'vditor';
+import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 import { generateUUID } from '../utils';
 import { useResponsive } from '../hooks';
@@ -22,6 +21,7 @@ const Editor = ({
   useLayoutEffect(() => {
     setLoading(true);
     new Vditor(`vditor-${id}`, {
+      cdn: '',
       cache: {
         enable: false,
       },
