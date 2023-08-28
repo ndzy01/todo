@@ -55,7 +55,7 @@ export const useTodo = () => {
   const createTodo = (values: any) => {
     dispatch({ type: 'UPDATE', payload: { loading: true } });
     serviceAxios
-      .post('/todos', { ...values, operationSource: 'h5' })
+      .post('/todos', { ...values, operationSource: 'h5', keyBase: '', ivBase: '' })
       .then(() => {
         dispatch({ type: 'UPDATE', payload: { loading: false } });
         goPage('/');
