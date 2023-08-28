@@ -11,7 +11,7 @@ const baseURL = localStorage.getItem('baseURL');
 const url = baseURL ? baseURL : 'https://ndzy-server.vercel.app';
 const serviceAxios = axios.create({
   baseURL: url, // 基础请求地址
-  timeout: 10000, // 请求超时设置
+  timeout: 60000, // 请求超时设置
   withCredentials: false, // 跨域请求是否需要携带 cookie
 });
 // 创建请求拦截
