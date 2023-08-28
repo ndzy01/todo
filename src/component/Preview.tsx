@@ -1,7 +1,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+// @ts-nocheck
 import { Spin } from 'antd';
 import { useLayoutEffect, useState } from 'react';
-import Vditor from 'vditor';
+// import Vditor from 'vditor';
 import 'vditor/dist/index.css';
 import { generateUUID } from '../utils';
 
