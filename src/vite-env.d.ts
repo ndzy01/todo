@@ -8,6 +8,7 @@ interface ITodo {
   tagId: string;
   deadline: string;
   isDel: number;
+  isFinish: number;
   userName: string;
   tagName: string;
   createdAt: string;

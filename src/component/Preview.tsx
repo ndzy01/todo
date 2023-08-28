@@ -13,6 +13,9 @@ const Preview = ({ value }: { value: string }) => {
         enable: false,
       },
       toolbar: ['fullscreen', 'outline', 'preview'],
+      resize: {
+        enable: true,
+      },
       minHeight: 200,
       value: value || '',
       outline: {

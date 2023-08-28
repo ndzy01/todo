@@ -103,7 +103,7 @@ export const useTodo = () => {
     dispatch({ type: 'UPDATE', payload: { loading: true } });
     serviceAxios
       .patch(`/todos/${item.id}`, {
-        isDel: true,
+        isFinish: true,
       })
       .then(() => {
         getAllTodo();
@@ -131,7 +131,7 @@ export const useTodo = () => {
     dispatch({ type: 'UPDATE', payload: { loading: true } });
     serviceAxios
       .patch(`/todos/${item.id}`, {
-        isDel: false,
+        isFinish: false,
       })
       .then(() => {
         getAllTodo();

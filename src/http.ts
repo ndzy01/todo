@@ -7,9 +7,11 @@ antMsg.config({
   maxCount: 1,
 });
 
+// localStorage.setItem('baseURL', 'http://localhost:3000');
+const baseURL = localStorage.getItem('baseURL');
+const url = baseURL ? baseURL : 'https://ndzy-server.vercel.app';
 const serviceAxios = axios.create({
-  baseURL: 'https://ndzy-server.vercel.app', // 基础请求地址
-  // baseURL: 'http://localhost:3000', // 基础请求地址
+  baseURL: url, // 基础请求地址
   timeout: 10000, // 请求超时设置
   withCredentials: false, // 跨域请求是否需要携带 cookie
 });

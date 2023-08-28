@@ -5,15 +5,15 @@ import { ReduxContext } from '../redux';
 
 const formItemLayout = {
   labelCol: {
-    xs: { span: 24 },
-    sm: { span: 8 },
+    xs: { span: 2 },
+    sm: { span: 2 },
   },
   wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 16 },
+    xs: { span: 22 },
+    sm: { span: 22 },
   },
 };
-const buttonItemLayout = { wrapperCol: { span: 14, offset: 4 } };
+const buttonItemLayout = { wrapperCol: { span: 14, offset: 2 } };
 const Login = () => {
   const { login } = useTodo();
   const { state } = useContext(ReduxContext);

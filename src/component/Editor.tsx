@@ -22,6 +22,9 @@ const Editor = ({
       cache: {
         enable: false,
       },
+      toolbarConfig: {
+        pin: true,
+      },
       toolbar: responsive.large
         ? [
             'outline',
@@ -53,7 +56,46 @@ const Editor = ({
             'export',
             'fullscreen',
           ]
-        : ['ordered-list', 'fullscreen'],
+        : [
+            'ordered-list',
+            'fullscreen',
+            {
+              name: 'more',
+              toolbar: [
+                'outline',
+                '|',
+                'headings',
+                'bold',
+                'italic',
+                'strike',
+                'quote',
+                'line',
+                'link',
+                'table',
+                '|',
+                'list',
+                'ordered-list',
+                'check',
+                'outdent',
+                'indent',
+                '|',
+                'code',
+                'inline-code',
+                '|',
+                'insert-after',
+                'insert-before',
+                '|',
+                'redo',
+                'undo',
+                'preview',
+                'export',
+                'fullscreen',
+              ],
+            },
+          ],
+      resize: {
+        enable: true,
+      },
       input: (v) => {
         onChange && onChange(v);
       },
