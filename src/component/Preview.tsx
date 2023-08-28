@@ -1,13 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useLayoutEffect } from 'react';
+import { Spin } from 'antd';
+import { useLayoutEffect, useState } from 'react';
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
-import { generateUUID } from './utils';
+import { generateUUID } from '../utils';
 
 const Preview = ({ value }: { value: string }) => {
   const id = generateUUID();
-
+  const [loading, setLoading] = useState(false);
   useLayoutEffect(() => {
+    setLoading(true);
     const VD = new Vditor(`preview-${id}`, {
       cache: {
         enable: false,
@@ -19,20 +21,22 @@ const Preview = ({ value }: { value: string }) => {
       minHeight: 200,
       value: value || '',
       outline: {
-        // 显示大纲
         enable: true,
         position: 'left',
       },
       after() {
         const evt = document.createEvent('Event');
-
         evt.initEvent('click', true, true);
         VD!.vditor!.toolbar!.elements!.preview!.firstElementChild!.dispatchEvent(evt);
+        setLoading(false);
       },
     });
   }, [value]);
-
-  return <div id={`preview-${id}`} className="ndzy-preview" />;
+  return (
+    <>
+      {loading && <Spin />}
+      <div id={`preview-${id}`} className="ndzy-preview" />
+    </>
+  );
 };
-
 export default Preview;

@@ -15,16 +15,14 @@ const Home = () => {
   const responsive = useResponsive();
   const [form] = Form.useForm();
   const { state } = useContext(ReduxContext);
-
   useMount(() => {
     initUser();
     initTags();
     getAllTodo();
   });
-
   return (
     <div>
-      <Space>
+      <Space className="mb-16">
         <Link to="/createTodo">创建待办</Link>
         <Link to="/tagsManage"> 标签管理</Link>
       </Space>
@@ -43,7 +41,6 @@ const Home = () => {
               options={state.tags.map((item) => ({ label: `${item.name}-(创建者: ${item.userName})`, value: item.id }))}
             />
           </Form.Item>
-
           <div className="text-align-right">
             <Space size="small">
               <Button type="primary" htmlType="submit">
@@ -61,7 +58,6 @@ const Home = () => {
           </div>
         </Form>
       )}
-
       <List loading={state.loading}>
         <VirtualList data={state.list} height={responsive.large ? 1020 : ContainerHeight} itemKey="id">
           {(item) => (
@@ -119,7 +115,6 @@ const Home = () => {
                   },
                 ]}
                 activeKey={item.isFinish === 0 ? ['1'] : undefined}
-                defaultActiveKey={item.isFinish === 0 ? ['1'] : undefined}
               />
             </List.Item>
           )}
@@ -128,5 +123,4 @@ const Home = () => {
     </div>
   );
 };
-
 export default Home;

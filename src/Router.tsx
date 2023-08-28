@@ -15,7 +15,6 @@ import { initialState, reducer, ReduxContext } from './redux';
 
 const Router = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
-
   return (
     <ConfigProvider locale={zhCn}>
       <ReduxContext.Provider value={{ state, dispatch }}>
@@ -35,5 +34,4 @@ const Router = () => {
     </ConfigProvider>
   );
 };
-
 export default Router;

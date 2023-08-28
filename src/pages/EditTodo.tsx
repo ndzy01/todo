@@ -12,12 +12,10 @@ const EditTodo = () => {
   const { initTags, initUser, editTodo } = useTodo();
   const { state } = useLocation();
   const { state: todoState } = useContext(ReduxContext);
-
   useMount(() => {
     initUser();
     initTags();
   });
-
   return (
     <Form
       name="edit"
@@ -34,7 +32,6 @@ const EditTodo = () => {
       <Form.Item>
         <h1 className="text-center">编辑待办</h1>
       </Form.Item>
-
       <Form.Item
         name="name"
         label="名称"
@@ -47,7 +44,6 @@ const EditTodo = () => {
       >
         <Input.TextArea rows={1} />
       </Form.Item>
-
       <Form.Item
         name="deadline"
         label="终止时间"
@@ -60,7 +56,6 @@ const EditTodo = () => {
       >
         <DatePicker className="w-100" format="YYYY-MM-DD" disabledDate={disabledDate} />
       </Form.Item>
-
       <Form.Item
         name="detail"
         label="详情"
@@ -73,11 +68,9 @@ const EditTodo = () => {
       >
         <Editor />
       </Form.Item>
-
       <Form.Item name="link" label="链接">
         <Input.TextArea rows={1} />
       </Form.Item>
-
       <Form.Item
         name="tagId"
         label="标签"
@@ -92,7 +85,6 @@ const EditTodo = () => {
           options={todoState.tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))}
         />
       </Form.Item>
-
       <Form.Item>
         <Button loading={todoState.loading} type="primary" htmlType="submit">
           保存
@@ -101,5 +93,4 @@ const EditTodo = () => {
     </Form>
   );
 };
-
 export default EditTodo;

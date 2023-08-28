@@ -2,28 +2,22 @@ body {
   margin: 0;
   overflow-x: hidden;
 }
-
 .w-100 {
   width: 100%;
 }
-
 .text-align-right {
   text-align: right;
 }
-
 .text-center {
   text-align: center;
 }
-
 .todo-home-tags {
   margin-top: 16px;
   flex-wrap: wrap;
 }
-
 .sky-blue {
   color: skyblue;
 }
-
 .todo-header {
   padding: 0;
   display: flex;
@@ -35,36 +29,28 @@ body {
     0 1px 6px -1px rgba(0, 0, 0, 0.02),
     0 2px 4px 0 rgba(0, 0, 0, 0.02);
 }
-
 .p-24 {
   padding: 24px;
 }
-
 .mb-16 {
   margin-bottom: 16px;
 }
-
 .w-200 {
   width: 200px;
 }
-
 .w-88 {
   width: 88%;
 }
-
 .mt-16 {
   margin-top: 16px;
 }
-
 .between {
   display: flex;
   justify-content: space-between;
 }
-
 .inline-flex {
   display: inline-flex;
 }
-
 .ant-list-item {
   background-color: #f9f9f9;
   border-radius: 25px;
@@ -74,28 +60,23 @@ body {
     0px 3px 6px rgba(0, 0, 0, 0.16),
     0px 3px 6px rgba(0, 0, 0, 0.23);
 }
-
 @media screen and (max-width: 800px) {
   .todo-menu {
     width: 399px;
   }
 }
-
 .layout-content {
   overflow: initial;
   height: 100%;
 }
-
 .todo-center {
   display: flex;
   align-items: center;
   justify-content: center;
 }
-
 .px-16 {
   padding: 0 16px;
 }
-
 .p-16 {
   padding: 16px;
 }

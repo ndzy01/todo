@@ -17,13 +17,11 @@ const buttonItemLayout = { wrapperCol: { span: 14, offset: 2 } };
 const Login = () => {
   const { login } = useTodo();
   const { state } = useContext(ReduxContext);
-
   return (
     <Form {...formItemLayout} name="login" onFinish={login} scrollToFirstError>
       <Form.Item name="mobile" label="手机号" rules={[{ required: true, message: '请输入你的手机号!' }]}>
         <Input className="w-100" />
       </Form.Item>
-
       <Form.Item
         name="password"
         label="密码"
@@ -37,7 +35,6 @@ const Login = () => {
       >
         <Input.Password />
       </Form.Item>
-
       <Form.Item {...buttonItemLayout}>
         <Button loading={state.loading} type="primary" htmlType="submit">
           登录
@@ -46,5 +43,4 @@ const Login = () => {
     </Form>
   );
 };
-
 export default Login;

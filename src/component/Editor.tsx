@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useLayoutEffect } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import Vditor from 'vditor';
 import 'vditor/dist/index.css';
-import { generateUUID } from './utils';
+import { generateUUID } from '../utils';
 import { useResponsive } from '../hooks';
+import { Spin } from 'antd';
 
 const Editor = ({
   value,
@@ -16,8 +17,9 @@ const Editor = ({
 }) => {
   const id = generateUUID();
   const responsive = useResponsive();
-
+  const [loading, setLoading] = useState(false);
   useLayoutEffect(() => {
+    setLoading(true);
     new Vditor(`vditor-${id}`, {
       cache: {
         enable: false,
@@ -100,17 +102,22 @@ const Editor = ({
         onChange && onChange(v);
       },
       outline: {
-        // 显示大纲
         enable: true,
         position: 'left',
       },
       minHeight: 200,
       placeholder,
       value: value || '',
+      after() {
+        setLoading(false);
+      },
     });
   }, []);
-
-  return <div id={`vditor-${id}`} className="ndzy-vditor" />;
+  return (
+    <>
+      {loading && <Spin />}
+      <div id={`vditor-${id}`} className="ndzy-vditor" />
+    </>
+  );
 };
-
 export default Editor;

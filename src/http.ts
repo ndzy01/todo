@@ -6,7 +6,6 @@ antMsg.config({
   duration: 3,
   maxCount: 1,
 });
-
 // localStorage.setItem('baseURL', 'http://localhost:3000');
 const baseURL = localStorage.getItem('baseURL');
 const url = baseURL ? baseURL : 'https://ndzy-server.vercel.app';
@@ -15,40 +14,32 @@ const serviceAxios = axios.create({
   timeout: 10000, // 请求超时设置
   withCredentials: false, // 跨域请求是否需要携带 cookie
 });
-
 // 创建请求拦截
 serviceAxios.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem('token');
-
     if (token) {
       config.headers = { Authorization: 'Basic' + ' ' + token } as AxiosRequestHeaders;
     }
-
     return config;
   },
   (error) => {
     Promise.reject(error);
   },
 );
-
 // 创建响应拦截
 serviceAxios.interceptors.response.use(
   (res) => {
     const data = res.data;
-
     if (res.data.status === 1) {
       antMsg.error(res.data.msg);
     }
-
     if (res.data.status === 0) {
       antMsg.success(res.data.msg);
     }
-
     if (res.data.status === 2) {
       localStorage.setItem('token', '');
     }
-
     return data;
   },
   (error) => {
@@ -116,5 +107,4 @@ serviceAxios.interceptors.response.use(
     return Promise.reject(message);
   },
 );
-
 export default serviceAxios;

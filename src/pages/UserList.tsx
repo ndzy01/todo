@@ -10,11 +10,9 @@ import { useTodo } from '../hooks';
 const UserList = () => {
   const { users, delUser, getUsers } = useTodo();
   const { state } = useContext(ReduxContext);
-
   useMount(() => {
     getUsers();
   });
-
   return (
     <List loading={state.loading}>
       <VirtualList data={users} height={ContainerHeight} itemKey="id">
@@ -44,5 +42,4 @@ const UserList = () => {
     </List>
   );
 };
-
 export default UserList;

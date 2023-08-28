@@ -9,18 +9,15 @@ import { useTodo } from '../hooks';
 const CreateTodo = () => {
   const { initTags, initUser, createTodo } = useTodo();
   const { state } = useContext(ReduxContext);
-
   useMount(() => {
     initUser();
     initTags();
   });
-
   return (
     <Form name="create" onFinish={(values) => createTodo(values)} scrollToFirstError>
       <Form.Item>
         <h1 className="text-center">创建待办</h1>
       </Form.Item>
-
       <Form.Item
         name="name"
         label="名称"
@@ -33,7 +30,6 @@ const CreateTodo = () => {
       >
         <Input.TextArea rows={1} />
       </Form.Item>
-
       <Form.Item
         name="deadline"
         label="终止时间"
@@ -46,7 +42,6 @@ const CreateTodo = () => {
       >
         <DatePicker className="w-100" format="YYYY-MM-DD" disabledDate={disabledDate} />
       </Form.Item>
-
       <Form.Item
         name="detail"
         label="详情"
@@ -59,11 +54,9 @@ const CreateTodo = () => {
       >
         <Editor />
       </Form.Item>
-
       <Form.Item name="link" label="链接">
         <Input.TextArea rows={1} />
       </Form.Item>
-
       <Form.Item
         name="tagId"
         label="标签"
@@ -76,7 +69,6 @@ const CreateTodo = () => {
       >
         <Select options={state.tags.map((item) => ({ label: `${item.name}-(${item.userName})`, value: item.id }))} />
       </Form.Item>
-
       <Form.Item>
         <Button loading={state.loading} type="primary" htmlType="submit">
           创建
@@ -85,5 +77,4 @@ const CreateTodo = () => {
     </Form>
   );
 };
-
 export default CreateTodo;

@@ -9,19 +9,16 @@ const { Header, Content } = AntLayout;
 const Layout = () => {
   const { goPage, signOut } = useTodo();
   const { state } = useContext(ReduxContext);
-
   const onClick: MenuProps['onClick'] = (e) => {
     switch (e.key) {
       case '/signOut':
         signOut();
         break;
-
       default:
         goPage(e.key);
         break;
     }
   };
-
   const items: MenuProps['items'] = [
     {
       label: state.user && <div className="sky-blue">{state.user.name}</div>,
@@ -46,7 +43,6 @@ const Layout = () => {
       key: '/signOut',
     },
   ];
-
   return (
     <AntLayout className="layout">
       <Header className="todo-header">
@@ -60,5 +56,4 @@ const Layout = () => {
     </AntLayout>
   );
 };
-
 export default Layout;

@@ -9,11 +9,9 @@ import { useTodo } from '../hooks';
 const ITag: React.FC = () => {
   const { inputValue, initTags, delTag, handleCreateTag, setInputValue } = useTodo();
   const { state } = useContext(ReduxContext);
-
   useMount(() => {
     initTags();
   });
-
   return (
     <div>
       <h1 className="text-center">标签管理</h1>
@@ -23,7 +21,6 @@ const ITag: React.FC = () => {
           添加
         </Button>
       </Space.Compact>
-
       <List loading={state.loading}>
         <VirtualList data={state.tags} height={ContainerHeight} itemKey="id">
           {(item) => (
@@ -50,5 +47,4 @@ const ITag: React.FC = () => {
     </div>
   );
 };
-
 export default ITag;

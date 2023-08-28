@@ -17,7 +17,6 @@ const buttonItemLayout = { wrapperCol: { span: 14, offset: 2 } };
 const Register = () => {
   const { register } = useTodo();
   const { state } = useContext(ReduxContext);
-
   return (
     <Form {...formItemLayout} name="register" onFinish={register} scrollToFirstError>
       <Form.Item
@@ -27,11 +26,9 @@ const Register = () => {
       >
         <Input />
       </Form.Item>
-
       <Form.Item name="mobile" label="手机号" rules={[{ required: true, message: '请输入你的手机号!' }]}>
         <Input className="w-100" />
       </Form.Item>
-
       <Form.Item
         name="password"
         label="密码"
@@ -45,7 +42,6 @@ const Register = () => {
       >
         <Input.Password />
       </Form.Item>
-
       <Form.Item
         name="confirm"
         label="确认密码"
@@ -68,7 +64,6 @@ const Register = () => {
       >
         <Input.Password />
       </Form.Item>
-
       <Form.Item {...buttonItemLayout}>
         <Button loading={state.loading} type="primary" htmlType="submit">
           注册
@@ -77,5 +72,4 @@ const Register = () => {
     </Form>
   );
 };
-
 export default Register;
