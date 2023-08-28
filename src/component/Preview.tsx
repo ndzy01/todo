@@ -11,7 +11,7 @@ const Preview = ({ value }: { value: string }) => {
   useLayoutEffect(() => {
     setLoading(true);
     const VD = new Vditor(`preview-${id}`, {
-      cdn: '',
+      cdn: 'https://cdn.jsdelivr.net/npm/vditor@3.9.4',
       cache: {
         enable: false,
       },

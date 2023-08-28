@@ -21,7 +21,7 @@ const Editor = ({
   useLayoutEffect(() => {
     setLoading(true);
     new Vditor(`vditor-${id}`, {
-      cdn: '',
+      cdn: 'https://cdn.jsdelivr.net/npm/vditor@3.9.4',
       cache: {
         enable: false,
       },
