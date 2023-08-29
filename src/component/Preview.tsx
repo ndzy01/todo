@@ -19,7 +19,7 @@ const Preview = ({ value }: { value: string }) => {
       resize: {
         enable: true,
       },
-      minHeight: 200,
+      minHeight: window.innerHeight * 0.7,
       value: value || '',
       outline: {
         enable: true,
