@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useSetState } from 'ahooks';
 import { Button, Drawer, Space, Tag } from 'antd';
 import dayjs from 'dayjs';
 import Preview from './Preview';
 
-const Q = (props: any) => {
+const View = (props: any) => {
   const [state, setState] = useSetState({ open: false });
 
   return (
@@ -30,5 +31,4 @@ const Q = (props: any) => {
     </>
   );
 };
-
-export default Q;
+export default View;
