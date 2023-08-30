@@ -3,12 +3,12 @@ import { useState, useEffect } from 'react';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 
-function MyEditor({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+function MyEditor({ value, onChange }: { value?: string; onChange: (value?: string) => void }) {
   // editor 实例
   const [editor, setEditor] = useState<IDomEditor | null>(null); // TS 语法
 
   // 编辑器内容
-  const [html, setHtml] = useState('');
+  const [html, setHtml] = useState<string | undefined>('');
 
   // 异步设置 html
   useEffect(() => {
