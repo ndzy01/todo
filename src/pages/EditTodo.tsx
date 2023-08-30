@@ -30,7 +30,7 @@ const EditTodo = () => {
       scrollToFirstError
     >
       <Form.Item>
-        <h1 className="text-center">编辑待办</h1>
+        <h1 className="text-center m-0">编辑待办</h1>
       </Form.Item>
       <Form.Item
         name="name"

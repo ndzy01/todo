@@ -16,7 +16,7 @@ const CreateTodo = () => {
   return (
     <Form name="create" onFinish={(values) => createTodo(values)} scrollToFirstError>
       <Form.Item>
-        <h1 className="text-center">创建待办</h1>
+        <h1 className="text-center m-0">创建待办</h1>
       </Form.Item>
       <Form.Item
         name="name"

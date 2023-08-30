@@ -14,7 +14,7 @@ const ITag: React.FC = () => {
   });
   return (
     <div>
-      <h1 className="text-center">标签管理</h1>
+      <h1 className="text-center m-0">标签管理</h1>
       <Space.Compact className="w-100">
         <Input placeholder="请输入" value={inputValue} onChange={(e) => setInputValue(e.target.value)} />
         <Button loading={state.loading} type="primary" onClick={handleCreateTag}>
