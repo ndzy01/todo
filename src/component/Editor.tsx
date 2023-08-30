@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import '@wangeditor/editor/dist/css/style.css'; // 引入 css
 import { useState, useEffect } from 'react';
 import { Editor, Toolbar } from '@wangeditor/editor-for-react';
 import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 
-function MyEditor({ value, onChange }: { value?: string; onChange: (value?: string) => void }) {
+function MyEditor({ value, onChange }: any) {
   // editor 实例
   const [editor, setEditor] = useState<IDomEditor | null>(null); // TS 语法
 
