@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.2.5",
+    "@wangeditor/editor": "^5.1.23",
+    "@wangeditor/editor-for-react": "^1.0.6",
     "ahooks": "^3.7.8",
     "antd": "^5.8.2",
     "axios": "^1.4.0",

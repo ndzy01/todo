@@ -1,124 +1,60 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-import { useLayoutEffect, useState } from 'react';
-import Vditor from 'vditor';
-import 'vditor/dist/index.css';
-import { generateUUID } from '../utils';
-import { useResponsive } from '../hooks';
-import { Spin } from 'antd';
+import '@wangeditor/editor/dist/css/style.css'; // 引入 css
+import { useState, useEffect } from 'react';
+import { Editor, Toolbar } from '@wangeditor/editor-for-react';
+import { IDomEditor, IEditorConfig, IToolbarConfig } from '@wangeditor/editor';
 
-const Editor = ({
-  value,
-  onChange,
-  placeholder = '请输入',
-}: {
-  value?: string;
-  onChange?: (v: string) => void;
-  placeholder?: string;
-}) => {
-  const id = generateUUID();
-  const responsive = useResponsive();
-  const [loading, setLoading] = useState(false);
-  useLayoutEffect(() => {
-    setLoading(true);
-    new Vditor(`vditor-${id}`, {
-      cdn: 'https://cdn.jsdelivr.net/npm/vditor@3.9.4',
-      cache: {
-        enable: false,
-      },
-      toolbarConfig: {
-        pin: true,
-      },
-      toolbar: responsive.large
-        ? [
-            'outline',
-            '|',
-            'headings',
-            'bold',
-            'italic',
-            'strike',
-            'quote',
-            'line',
-            'link',
-            'table',
-            '|',
-            'list',
-            'ordered-list',
-            'check',
-            'outdent',
-            'indent',
-            '|',
-            'code',
-            'inline-code',
-            '|',
-            'insert-after',
-            'insert-before',
-            '|',
-            'redo',
-            'undo',
-            'preview',
-            'export',
-            'fullscreen',
-          ]
-        : [
-            'ordered-list',
-            'fullscreen',
-            {
-              name: 'more',
-              toolbar: [
-                'outline',
-                '|',
-                'headings',
-                'bold',
-                'italic',
-                'strike',
-                'quote',
-                'line',
-                'link',
-                'table',
-                '|',
-                'list',
-                'ordered-list',
-                'check',
-                'outdent',
-                'indent',
-                '|',
-                'code',
-                'inline-code',
-                '|',
-                'insert-after',
-                'insert-before',
-                '|',
-                'redo',
-                'undo',
-                'preview',
-                'export',
-                'fullscreen',
-              ],
-            },
-          ],
-      resize: {
-        enable: true,
-      },
-      input: (v) => {
-        onChange && onChange(v);
-      },
-      outline: {
-        enable: true,
-        position: 'left',
-      },
-      minHeight: 200,
-      placeholder,
-      value: value || '',
-      after() {
-        setLoading(false);
-      },
-    });
-  }, []);
+function MyEditor({ value, onChange }: { value: string; onChange: (value: string) => void }) {
+  // editor 实例
+  const [editor, setEditor] = useState<IDomEditor | null>(null); // TS 语法
+
+  // 编辑器内容
+  const [html, setHtml] = useState('');
+
+  // 异步设置 html
+  useEffect(() => {
+    setHtml(value);
+  }, [value]);
+
+  // 工具栏配置
+  const toolbarConfig: Partial<IToolbarConfig> = {}; // TS 语法
+
+  // 编辑器配置
+  const editorConfig: Partial<IEditorConfig> = {
+    placeholder: '请输入内容...',
+  };
+
+  // 及时销毁 editor ，重要！
+  useEffect(() => {
+    return () => {
+      if (editor == null) return;
+      editor.destroy();
+      setEditor(null);
+    };
+  }, [editor]);
+
   return (
     <>
-      {loading && <Spin />}
-      <div id={`vditor-${id}`} className="ndzy-vditor" />
+      <div style={{ border: '1px solid #ccc', zIndex: 100 }}>
+        <Toolbar
+          editor={editor}
+          defaultConfig={toolbarConfig}
+          mode="default"
+          style={{ borderBottom: '1px solid #ccc' }}
+        />
+        <Editor
+          defaultConfig={editorConfig}
+          value={html}
+          onCreated={setEditor}
+          onChange={(editor) => {
+            setHtml(editor.getHtml());
+            onChange(editor.getHtml());
+          }}
+          mode="default"
+          style={{ height: '500px', overflowY: 'hidden' }}
+        />
+      </div>
     </>
   );
-};
-export default Editor;
+}
+
+export default MyEditor;
